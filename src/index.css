@@ -1,0 +1,267 @@
+/* @import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Paleta de Colores Orgánicos y Tierra */
+  --color-bg-sand: #fbf9f4;       /* Arena / Hueso */
+  --color-bg-paper: #f4efe4;      /* Papel hecho a mano */
+  --color-text-earth: #2c221e;    /* Café tierra oscuro */
+  --color-text-muted: #5e4e46;    /* Café suave / sepia */
+  --color-accent-terracotta: #c86b4b; /* Terracota cálido */
+  --color-accent-sage: #506555;   /* Verde olivo / salvia místico */
+  --color-accent-gold: #d89b30;   /* Ocre / Raíz de oro / Sol */
+  --color-accent-soft: #ebdccb;   /* Crema / Avena */
+  --color-border: #dfd5c4;        /* Color de línea/borde sutil */
+  
+  /* Fuentes */
+  --font-title: 'Cinzel', serif;
+  --font-body: 'Quicksand', sans-serif;
+  
+  /* Transiciones estándar */
+  --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  --transition-fast: all 0.2s ease;
+}
+
+/* Reset de estilos */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text-earth);
+  line-height: 1.6;
+  overflow-x: hidden;
+  /* Múltiples fondos: Textura de papel sobre un gradiente de agua fluida animado */
+  background-image: 
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E"),
+    linear-gradient(120deg, #fbf9f4 0%, #edf5f0 35%, #f4efe4 65%, #e3eee7 100%);
+  background-size: 100% 100%, 400% 400%;
+  animation: waterFlow 25s ease-in-out infinite;
+}
+
+/* Tipografía */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--color-text-earth);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Bordes orgánicos ("Hechos a Mano") */
+.organic-border-1 {
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+}
+
+.organic-border-2 {
+  border-radius: 40% 60% 50% 50% / 50% 40% 60% 50%;
+}
+
+.organic-border-3 {
+  border-radius: 70% 30% 50% 50% / 30% 70% 45% 55%;
+}
+
+/* Estilo de botones artesanales */
+.btn-handwritten {
+  font-family: var(--font-title);
+  background: transparent;
+  color: var(--color-text-earth);
+  border: 2px solid var(--color-text-earth);
+  padding: 0.8rem 1.8rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  transition: var(--transition-smooth);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px; /* Efecto boceto */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-handwritten::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-accent-terracotta);
+  z-index: -1;
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  transform: scale(0.95);
+  opacity: 0;
+  transition: var(--transition-smooth);
+}
+
+.btn-handwritten:hover {
+  color: #fff;
+  border-color: var(--color-accent-terracotta);
+  transform: translateY(-2px);
+}
+
+.btn-handwritten:hover::before {
+  opacity: 1;
+  transform: scale(1.03);
+}
+
+.btn-primary-organic {
+  background-color: var(--color-accent-terracotta);
+  color: #fff;
+  border: 2px solid var(--color-accent-terracotta);
+}
+
+.btn-primary-organic:hover {
+  background-color: transparent;
+  color: var(--color-accent-terracotta);
+}
+
+.btn-primary-organic::before {
+  background-color: var(--color-bg-sand);
+}
+
+.btn-secondary-organic {
+  background-color: var(--color-accent-sage);
+  color: #fff;
+  border: 2px solid var(--color-accent-sage);
+}
+
+.btn-secondary-organic:hover {
+  background-color: transparent;
+  color: var(--color-accent-sage);
+}
+
+.btn-secondary-organic::before {
+  background-color: var(--color-bg-sand);
+}
+
+/* Tarjetas artesanales */
+.card-handmade {
+  background-color: var(--color-bg-paper);
+  border: 2px solid var(--color-border);
+  border-radius: 12px 24px 12px 18px / 20px 12px 24px 14px; /* Bordes imperfectos */
+  padding: 2rem;
+  box-shadow: 3px 5px 15px rgba(44, 34, 30, 0.04);
+  transition: var(--transition-smooth);
+  position: relative;
+}
+
+.card-handmade:hover {
+  transform: translateY(-5px) rotate(-0.5deg);
+  box-shadow: 5px 8px 25px rgba(44, 34, 30, 0.08);
+  border-color: var(--color-text-earth);
+}
+
+/* Línea divisoria dibujada */
+.divider-handdrawn {
+  height: 6px;
+  background-color: var(--color-border);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  margin: 2rem 0;
+  opacity: 0.7;
+}
+
+/* Contenedor responsivo */
+.container-organic {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Animación de flotado suave */
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(0.5deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.animate-float-slow {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-sand);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-text-muted);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-terracotta);
+}
+
+/* Animación de ondas de agua */
+@keyframes waterFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Animaciones de balanceo de plantas (Chinampa) */
+@keyframes swayLeft {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(1.5deg) translateY(2px); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes swayRight {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(-1.5deg) translateY(-2px); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes swayFloatingLeaf {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(2deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.chinampa-sway-left {
+  animation: swayLeft 8s ease-in-out infinite;
+  transform-origin: top left;
+}
+
+.chinampa-sway-right {
+  animation: swayRight 10s ease-in-out infinite;
+  transform-origin: bottom right;
+}
+
+.chinampa-float-leaf {
+  animation: swayFloatingLeaf 6s ease-in-out infinite;
+}
+
+/* Ocultar elementos decorativos de la chinampa en dispositivos móviles y tabletas */
+@media (max-width: 1023px) {
+  .chinampa-decor-left,
+  .chinampa-decor-left-bottom,
+  .chinampa-decor-right {
+    display: none !important;
+  }
+}
+
+/* Animación de desplazamiento de olas de agua (dentro del SVG lateral) */
+@keyframes waveMove {
+  0% { transform: translateX(0px); }
+  50% { transform: translateX(-12px) translateY(1px); }
+  100% { transform: translateX(0px); }
+}
+
+.water-wave-anim {
+  animation: waveMove 5s ease-in-out infinite;
+}
+
