@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { ArrowRight, Compass, Flame, Leaf, Droplet, BookOpen } from 'lucide-react';
 import { motion, type Variants } from 'framer-motion';
 
@@ -143,11 +145,11 @@ export const Home: React.FC = () => {
               flexWrap: 'wrap',
             }}
           >
-            <Link to="/calendario" className="btn-handwritten btn-primary-organic" style={{ border: '2px solid var(--color-accent-gold)', color: '#fff' }}>
+            <Link href="/calendario" className="btn-handwritten btn-primary-organic" style={{ border: '2px solid var(--color-accent-gold)', color: '#fff' }}>
               Próximos Eventos
               <ArrowRight size={18} />
             </Link>
-            <Link to="/ceremonias" className="btn-handwritten" style={{ borderColor: 'var(--color-bg-sand)', color: 'var(--color-bg-sand)' }}>
+            <Link href="/ceremonias" className="btn-handwritten" style={{ borderColor: 'var(--color-bg-sand)', color: 'var(--color-bg-sand)' }}>
               Nuestras Ceremonias
             </Link>
           </motion.div>
@@ -193,7 +195,7 @@ export const Home: React.FC = () => {
               <p style={{ color: 'var(--color-text-muted)', marginBottom: '2rem' }}>
                 Aquí, el fuego del abuelo Temazcal transmuta y purifica, el Cacao sagrado abre el corazón y despierta la palabra dulce, y el viento susurra los rezos que curan el alma. Te invitamos a cruzar en canoa y vivir un reencuentro contigo mismo y con la naturaleza.
               </p>
-              <Link to="/ceremonias" className="btn-handwritten btn-secondary-organic">
+              <Link href="/ceremonias" className="btn-handwritten btn-secondary-organic">
                 Conoce Nuestras Ceremonias
               </Link>
             </motion.div>
@@ -434,7 +436,7 @@ export const Home: React.FC = () => {
           </motion.div>
 
           <div style={{ textAlign: 'center' }}>
-            <Link to="/nosotros" className="btn-handwritten btn-secondary-organic">
+            <Link href="/nosotros" className="btn-handwritten btn-secondary-organic">
               Ver Todos los Guardianes
             </Link>
           </div>
@@ -510,10 +512,10 @@ export const Home: React.FC = () => {
                 Apoya a los productores locales y adquiere tinturas, microdosis y pomadas hechas con cantos y rezos de sanación.
               </p>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                <Link to="/tienda" className="btn-handwritten btn-primary-organic">
+                <Link href="/tienda" className="btn-handwritten btn-primary-organic">
                   Explorar Tienda
                 </Link>
-                <Link to="/contacto" className="btn-handwritten">
+                <Link href="/contacto" className="btn-handwritten">
                   Ubicación & Contacto
                 </Link>
               </div>
@@ -599,7 +601,7 @@ export const Home: React.FC = () => {
                 </p>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
                   <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontStyle: 'italic' }}>Abuela María Guadalupe</span>
-                  <Link to="/rezandero" className="btn-handwritten" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem', gap: '0.3rem' }}>
+                  <Link href="/rezandero" className="btn-handwritten" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem', gap: '0.3rem' }}>
                     <BookOpen size={12} />
                     <span>Leer</span>
                   </Link>
@@ -620,7 +622,7 @@ export const Home: React.FC = () => {
                 </p>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
                   <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontStyle: 'italic' }}>Taita Juan</span>
-                  <Link to="/rezandero" className="btn-handwritten" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem', gap: '0.3rem' }}>
+                  <Link href="/rezandero" className="btn-handwritten" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem', gap: '0.3rem' }}>
                     <BookOpen size={12} />
                     <span>Leer</span>
                   </Link>
@@ -630,7 +632,7 @@ export const Home: React.FC = () => {
           </motion.div>
 
           <div style={{ textAlign: 'center' }}>
-            <Link to="/rezandero" className="btn-handwritten btn-primary-organic">
+            <Link href="/rezandero" className="btn-handwritten btn-primary-organic">
               Ver Todas las Entradas
             </Link>
           </div>

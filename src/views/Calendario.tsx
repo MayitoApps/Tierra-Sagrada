@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { collection, getDocs, query, orderBy, where } from 'firebase/firestore';
-import { db } from '../firebase/config';
+'use client';
+
+import React, { useState } from 'react';
 import { Clock, User, DollarSign, UserCheck, MessageSquare, Loader } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -64,60 +64,9 @@ const fallbackEventos: Evento[] = [
   }
 ];
 
-const getInitialEventos = (): Evento[] => {
-  const cached = localStorage.getItem('tierra_sagrada_eventos');
-  if (cached) {
-    try {
-      return JSON.parse(cached);
-    } catch {
-      return fallbackEventos;
-    }
-  }
-  return fallbackEventos;
-};
-
 export const Calendario: React.FC = () => {
-  const [eventos, setEventos] = useState<Evento[]>(getInitialEventos);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchEventos = async () => {
-      try {
-        // Consultar eventos programados ordenados por fecha ascendente
-        const hoy = new Date().toISOString().split('T')[0]; // Fecha actual YYYY-MM-DD
-        const eventosRef = collection(db, 'eventos');
-        // Traer eventos que ocurran hoy o en el futuro
-        const q = query(
-          eventosRef,
-          where('fecha', '>=', hoy),
-          orderBy('fecha', 'asc')
-        );
-        
-        const querySnapshot = await getDocs(q);
-        const dataList: Evento[] = [];
-        
-        querySnapshot.forEach((doc) => {
-          dataList.push({ id: doc.id, ...doc.data() } as Evento);
-        });
-
-        if (dataList.length > 0) {
-          setEventos(dataList);
-          localStorage.setItem('tierra_sagrada_eventos', JSON.stringify(dataList));
-        } else {
-          // Si la colección está vacía, usar el fallback
-          setEventos(fallbackEventos);
-          localStorage.removeItem('tierra_sagrada_eventos');
-        }
-      } catch (error) {
-        console.error('Error al recuperar eventos de Firestore: ', error);
-        // Mantenemos los datos de caché/fallback que ya están en el estado
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEventos();
-  }, []);
+  const [eventos] = useState<Evento[]>(fallbackEventos);
+  const [loading] = useState(false);
 
   // Formatear la fecha para que sea legible en español
   const formatFechaLegible = (fechaStr: string) => {

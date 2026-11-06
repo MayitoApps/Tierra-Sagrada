@@ -1,18 +1,16 @@
 # Tierra Sagrada 🌿
 
-Sitio web oficial de **Tierra Sagrada**, un espacio de sanación, medicina tradicional mexihka, temazcales, ceremonias ancestrales y productos naturales elaborados en la chinampa de Xochimilco, Ciudad de México.
+Sitio web oficial de **Tierra Sagrada**, un espacio sagrado de sanación, medicina tradicional mexihka, temazcales, ceremonias ancestrales y productos naturales elaborados en la chinampa de Xochimilco, Ciudad de México.
 
 ---
 
 ## 🛠️ Tecnologías
 
-- **Framework**: [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
-- **Empaquetador**: [Vite](https://vite.dev/)
-- **Enrutamiento**: [React Router DOM v7](https://reactrouter.com/)
+- **Framework**: [Next.js](https://nextjs.org/) (App Router, React 19, TypeScript)
 - **Animaciones**: [Framer Motion](https://www.framer.com/motion/)
 - **Iconografía**: [Lucide React](https://lucide.dev/)
-- **Base de Datos y Autenticación**: [Firebase](https://firebase.google.com/) (Firestore, Auth, Storage)
-- **Despliegue**: Optimizado para [Vercel](https://vercel.com/)
+- **Estilos**: Vanilla CSS con variables de diseño orgánico inspiradas en la tierra y la naturaleza
+- **Despliegue**: Optimizado de forma nativa para [Vercel](https://vercel.com/) (Zero-Config)
 
 ---
 
@@ -20,7 +18,7 @@ Sitio web oficial de **Tierra Sagrada**, un espacio de sanación, medicina tradi
 
 ### 1. Clonar el repositorio
 ```bash
-git clone https://github.com/TU_USUARIO/Tierra-Sagrada.git
+git clone https://github.com/MayitoApps/Tierra-Sagrada.git
 cd Tierra-Sagrada
 ```
 
@@ -29,19 +27,13 @@ cd Tierra-Sagrada
 npm install
 ```
 
-### 3. Configurar variables de entorno
-Copia el archivo `.env.example` y renómbralo a `.env.local`:
-```bash
-cp .env.example .env.local
-```
-Rellena las credenciales correspondientes a tu proyecto de Firebase.
-
-### 4. Iniciar servidor de desarrollo
+### 3. Iniciar servidor de desarrollo
 ```bash
 npm run dev
 ```
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la página.
 
-### 5. Compilar para producción
+### 4. Compilar para producción
 ```bash
 npm run build
 ```
@@ -50,26 +42,15 @@ npm run build
 
 ## ☁️ Despliegue en Vercel
 
-Este proyecto cuenta con `vercel.json` configurado para manejar el enrutamiento de aplicación de una sola página (SPA / Single Page Application) sin errores 404 al recargar rutas como `/tienda`, `/ceremonias`, `/admin`, etc.
+Este proyecto no requiere bases de datos externas ni variables de entorno para funcionar. Todo el catálogo, calendario, galería y blog vienen integrados de forma nativa.
 
-### Pasos para conectar a Vercel:
+### Pasos para desplegar en Vercel:
 
-1. **Subir el código a GitHub**:
-   Asegúrate de haber subido este repositorio a tu cuenta de GitHub.
-2. **Importar en Vercel**:
-   - Entra a tu cuenta en [vercel.com](https://vercel.com).
-   - Haz clic en **"Add New..."** > **"Project"**.
-   - Selecciona el repositorio `Tierra-Sagrada`.
-3. **Variables de Entorno en Vercel**:
-   En la sección **"Environment Variables"** dentro de la configuración del proyecto en Vercel, agrega las variables de tu archivo `.env.example`:
-   - `VITE_FIREBASE_API_KEY`
-   - `VITE_FIREBASE_AUTH_DOMAIN`
-   - `VITE_FIREBASE_PROJECT_ID`
-   - `VITE_FIREBASE_STORAGE_BUCKET`
-   - `VITE_FIREBASE_MESSAGING_SENDER_ID`
-   - `VITE_FIREBASE_APP_ID`
-4. **Desplegar**:
-   Haz clic en **"Deploy"**. Vercel detectará Vite automáticamente y compilará la aplicación en segundos.
+1. **Entra a [vercel.com](https://vercel.com)** e inicia sesión con tu cuenta de GitHub.
+2. Haz clic en **"Add New..."** > **"Project"**.
+3. Selecciona el repositorio **`MayitoApps/Tierra-Sagrada`**.
+4. Haz clic en **"Deploy"** (Vercel detecta Next.js automáticamente sin necesidad de configurar nada).
+5. ¡Listo! Tu página estará en vivo en segundos con SSL gratuito y rendimiento ultra rápido en el Edge de Vercel.
 
 ---
 
@@ -77,15 +58,23 @@ Este proyecto cuenta con `vercel.json` configurado para manejar el enrutamiento 
 
 ```
 Tierra-Sagrada/
-├── public/              # Archivos estáticos e imágenes servidas directamente
+├── public/              # Archivos multimedia, imágenes y fotos de las ceremonias
 ├── src/
-│   ├── assets/          # Logotipos y recursos importados
-│   ├── components/      # Componentes reutilizables (Navbar, Footer, CartDrawer, Layout)
+│   ├── app/             # Rutas y páginas de Next.js (App Router)
+│   │   ├── layout.tsx   # Layout global (Metadatos, CartProvider, Estructura)
+│   │   ├── page.tsx     # Página de inicio
+│   │   ├── ceremonias/  # Vista de ceremonias
+│   │   ├── calendario/  # Vista de calendario
+│   │   ├── nosotros/    # Vista de guardianes y facilitadores
+│   │   ├── rezandero/   # Vista de blog y lecturas medicinales
+│   │   ├── tienda/      # Catálogo de productos y medicina natural
+│   │   ├── galeria/     # Galería de fotos y videos
+│   │   ├── contacto/    # Ubicación y contacto
+│   │   └── admin/       # Panel administrativo local
+│   ├── components/      # Componentes (Navbar, Footer, CartDrawer, Layout)
 │   ├── context/         # Contexto global (Carrito de compras)
-│   ├── firebase/        # Configuración e inicialización de Firebase
-│   └── pages/           # Vistas principales (Home, Tienda, Ceremonias, Admin, etc.)
-├── vercel.json          # Reglas de reescritura SPA para Vercel
-├── .env.example         # Plantilla de variables de entorno
-├── vite.config.ts       # Configuración de Vite
+│   ├── views/           # Vistas y componentes de página desacoplados
+│   └── index.css        # Sistema de estilos y variables orgánicas
+├── next.config.mjs      # Configuración de Next.js
 └── package.json         # Scripts y dependencias
 ```

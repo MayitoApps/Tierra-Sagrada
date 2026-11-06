@@ -1,21 +1,6 @@
+'use client';
+
 import React, { useState, useEffect, useCallback } from 'react';
-import { auth, db, storage } from '../firebase/config';
-import {
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-  type User
-} from 'firebase/auth';
-import {
-  collection,
-  addDoc,
-  getDocs,
-  deleteDoc,
-  doc,
-  query,
-  orderBy
-} from 'firebase/firestore';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { Calendar, ShoppingBag, Image as ImageIcon, Plus, Trash2, LogOut, Lock, ShieldAlert, Loader } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -31,10 +16,14 @@ interface GaleriaItem {
   titulo?: string;
 }
 
+interface AdminUser {
+  email: string;
+}
+
 const ALLOWED_EMAILS = ['artes.grupoorganico@gmail.com', 'tierrasagradaxoch@gmail.com'];
 
 export const Admin: React.FC = () => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<AdminUser | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
   
   // Login fields
@@ -69,7 +58,7 @@ export const Admin: React.FC = () => {
     price: 0,
     descripcion: '',
     beneficios: '',
-    imageLink: '', // Permite poner un URL directo
+    imageLink: '',
   });
   const [productImageFile, setProductImageFile] = useState<File | null>(null);
   const [productUploadProgress, setProductUploadProgress] = useState<number | null>(null);
@@ -84,59 +73,77 @@ export const Admin: React.FC = () => {
   const [galleryFile, setGalleryFile] = useState<File | null>(null);
   const [galleryUploadProgress, setGalleryUploadProgress] = useState<number | null>(null);
 
-  // 1. Escuchar estado de autenticación
+  // 1. Escuchar estado de autenticación (guardado en sesión local)
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // Validar si el email está permitido
-        if (user.email && ALLOWED_EMAILS.includes(user.email.toLowerCase())) {
-          setCurrentUser(user);
-          setAuthError('');
-        } else {
-          // No autorizado -> cerrar sesión de inmediato
-          signOut(auth);
-          setCurrentUser(null);
-          setAuthError('Tu cuenta de correo no está autorizada para acceder a este panel.');
+    try {
+      if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem('tierra_admin_user');
+        if (stored && ALLOWED_EMAILS.includes(stored.toLowerCase())) {
+          requestAnimationFrame(() => {
+            setCurrentUser({ email: stored });
+          });
         }
-      } else {
-        setCurrentUser(null);
       }
+    } catch {
+      // ignore
+    } finally {
       setAuthLoading(false);
-    });
-
-    return () => unsubscribe();
+    }
   }, []);
 
   // 2. Cargar listas si hay usuario logueado
-  const loadData = useCallback(async () => {
-    queueMicrotask(() => {
-      setActionLoading(true);
-    });
+  const loadData = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    setActionLoading(true);
     try {
       if (activeTab === 'eventos') {
-        const querySnapshot = await getDocs(query(collection(db, 'eventos'), orderBy('fecha', 'asc')));
-        const list: Evento[] = [];
-        querySnapshot.forEach((doc) => {
-          list.push({ id: doc.id, ...doc.data() } as Evento);
-        });
-        setEventos(list);
+        const stored = localStorage.getItem('tierra_sagrada_eventos');
+        if (stored) {
+          setEventos(JSON.parse(stored));
+        } else {
+          setEventos([
+            {
+              id: 'ev-1',
+              titulo: 'Temazcal de Luna Nueva & Sahumación',
+              facilitador: 'Abuela María Guadalupe & Taita Juan',
+              fecha: '2026-06-21',
+              hora: '16:00',
+              descripcion: 'Siembra de propósitos dentro del vientre caliente de la Madre Tierra.',
+              aportacion: 500,
+              cupo: 15,
+              tipoCeremonia: 'Temazcal',
+            }
+          ]);
+        }
       } else if (activeTab === 'productos') {
-        const querySnapshot = await getDocs(collection(db, 'productos'));
-        const list: Producto[] = [];
-        querySnapshot.forEach((doc) => {
-          list.push({ id: doc.id, ...doc.data() } as Producto);
-        });
-        setProductos(list);
+        const stored = localStorage.getItem('tierra_sagrada_productos');
+        if (stored) {
+          setProductos(JSON.parse(stored));
+        } else {
+          setProductos([
+            {
+              id: 'p-1',
+              name: 'Extracto de Chilcuague',
+              price: 250,
+              descripcion: 'Contiene afinina, alcamida medicinal para boca seca y defensas.',
+              beneficios: 'Extracto puro de chilcuague y miel.',
+              image: '/extracto-chilcuague.jpeg',
+            }
+          ]);
+        }
       } else if (activeTab === 'galeria') {
-        const querySnapshot = await getDocs(collection(db, 'galeria'));
-        const list: GaleriaItem[] = [];
-        querySnapshot.forEach((doc) => {
-          list.push({ id: doc.id, ...doc.data() } as GaleriaItem);
-        });
-        setGaleriaItems(list);
+        const stored = localStorage.getItem('tierra_sagrada_galeria');
+        if (stored) {
+          setGaleriaItems(JSON.parse(stored));
+        } else {
+          setGaleriaItems([
+            { id: 'g-1', url: '/1.jpeg', tipo: 'foto', categoria: 'temazcal', titulo: 'Preparación del Temazcal' },
+            { id: 'g-2', url: '/2.jpeg', tipo: 'foto', categoria: 'cacao', titulo: 'Ceremonia de Cacao' }
+          ]);
+        }
       }
     } catch (e) {
-      console.error('Error cargando datos de Firestore: ', e);
+      console.error('Error cargando datos: ', e);
     } finally {
       setActionLoading(false);
     }
@@ -144,49 +151,62 @@ export const Admin: React.FC = () => {
 
   useEffect(() => {
     if (currentUser) {
-      void (async () => {
-        await loadData();
-      })();
+      requestAnimationFrame(() => {
+        loadData();
+      });
     }
   }, [currentUser, loadData]);
 
   // 3. Control de Login
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setAuthLoading(true);
     setAuthError('');
 
+    const cleanEmail = loginEmail.toLowerCase().trim();
+    if (!ALLOWED_EMAILS.includes(cleanEmail)) {
+      setAuthError('Tu cuenta de correo no está autorizada para acceder a este panel.');
+      setAuthLoading(false);
+      return;
+    }
+
+    if (!loginPassword) {
+      setAuthError('Por favor ingresa tu contraseña.');
+      setAuthLoading(false);
+      return;
+    }
+
     try {
-      if (!ALLOWED_EMAILS.includes(loginEmail.toLowerCase().trim())) {
-        setAuthError('Tu cuenta de correo no está autorizada para acceder a este panel.');
-        setAuthLoading(false);
-        return;
-      }
-      
-      await signInWithEmailAndPassword(auth, loginEmail.trim(), loginPassword);
-    } catch (error: unknown) {
-      console.error('Error al iniciar sesión:', error);
-      const authError = error as { code?: string };
-      if (authError.code === 'auth/wrong-password' || authError.code === 'auth/user-not-found' || authError.code === 'auth/invalid-credential') {
-        setAuthError('Correo o contraseña incorrectos.');
-      } else {
-        setAuthError('Ocurrió un error al intentar iniciar sesión.');
-      }
+      localStorage.setItem('tierra_admin_user', cleanEmail);
+      setCurrentUser({ email: cleanEmail });
+    } catch {
+      setAuthError('Error al guardar sesión.');
+    } finally {
       setAuthLoading(false);
     }
   };
 
   const handleLogout = () => {
-    signOut(auth);
+    try {
+      localStorage.removeItem('tierra_admin_user');
+    } catch {
+      // ignore
+    }
+    setCurrentUser(null);
   };
 
   // 4. Alta de Evento
-  const handleCreateEvent = async (e: React.FormEvent) => {
+  const handleCreateEvent = (e: React.FormEvent) => {
     e.preventDefault();
     setActionLoading(true);
     try {
-      await addDoc(collection(db, 'eventos'), eventForm);
-      // Limpiar formulario
+      const newEvent: Evento = {
+        id: 'ev-' + Date.now(),
+        ...eventForm,
+      };
+      const updated = [newEvent, ...eventos];
+      setEventos(updated);
+      localStorage.setItem('tierra_sagrada_eventos', JSON.stringify(updated));
       setEventForm({
         titulo: '',
         facilitador: '',
@@ -197,17 +217,16 @@ export const Admin: React.FC = () => {
         cupo: 12,
         tipoCeremonia: 'Temazcal',
       });
-      loadData();
       alert('¡Evento creado exitosamente! 🎉');
     } catch (err) {
       console.error('Error al guardar evento:', err);
-      alert('Error al guardar el evento. Asegúrate de configurar las reglas en Firestore.');
+      alert('Error al guardar el evento.');
     } finally {
       setActionLoading(false);
     }
   };
 
-  // 5. Alta de Producto (Con soporte de Storage o Link directo)
+  // 5. Alta de Producto
   const handleCreateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     setActionLoading(true);
@@ -215,29 +234,18 @@ export const Admin: React.FC = () => {
     try {
       let finalImageUrl = productForm.imageLink;
 
-      // Si seleccionó un archivo físico, subirlo a Firebase Storage
       if (productImageFile) {
-        const fileRef = ref(storage, `productos/${Date.now()}_${productImageFile.name}`);
-        const uploadTask = uploadBytesResumable(fileRef, productImageFile);
-
-        // Esperar la subida
-        await new Promise<void>((resolve, reject) => {
-          uploadTask.on(
-            'state_changed',
-            (snapshot) => {
-              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              setProductUploadProgress(Math.round(progress));
-            },
-            (error) => reject(error),
-            async () => {
-              finalImageUrl = await getDownloadURL(uploadTask.snapshot.ref);
-              resolve();
-            }
-          );
+        setProductUploadProgress(50);
+        finalImageUrl = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.readAsDataURL(productImageFile);
         });
+        setProductUploadProgress(100);
       }
 
-      const newProduct = {
+      const newProduct: Producto = {
+        id: 'p-' + Date.now(),
         name: productForm.name,
         price: Number(productForm.price),
         descripcion: productForm.descripcion,
@@ -245,9 +253,10 @@ export const Admin: React.FC = () => {
         image: finalImageUrl || '',
       };
 
-      await addDoc(collection(db, 'productos'), newProduct);
+      const updated = [newProduct, ...productos];
+      setProductos(updated);
+      localStorage.setItem('tierra_sagrada_productos', JSON.stringify(updated));
 
-      // Resetear
       setProductForm({
         name: '',
         price: 0,
@@ -257,7 +266,6 @@ export const Admin: React.FC = () => {
       });
       setProductImageFile(null);
       setProductUploadProgress(null);
-      loadData();
       alert('¡Producto agregado exitosamente! 🌿');
     } catch (err) {
       console.error('Error al guardar producto:', err);
@@ -267,7 +275,7 @@ export const Admin: React.FC = () => {
     }
   };
 
-  // 6. Alta de Galería (Storage o Link)
+  // 6. Alta de Galería
   const handleUploadGallery = async (e: React.FormEvent) => {
     e.preventDefault();
     setActionLoading(true);
@@ -275,25 +283,14 @@ export const Admin: React.FC = () => {
     try {
       let finalMediaUrl = galleryForm.imageLink;
 
-      // Si seleccionó archivo físico
       if (galleryFile) {
-        const fileRef = ref(storage, `galeria/${Date.now()}_${galleryFile.name}`);
-        const uploadTask = uploadBytesResumable(fileRef, galleryFile);
-
-        await new Promise<void>((resolve, reject) => {
-          uploadTask.on(
-            'state_changed',
-            (snapshot) => {
-              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              setGalleryUploadProgress(Math.round(progress));
-            },
-            (error) => reject(error),
-            async () => {
-              finalMediaUrl = await getDownloadURL(uploadTask.snapshot.ref);
-              resolve();
-            }
-          );
+        setGalleryUploadProgress(50);
+        finalMediaUrl = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.readAsDataURL(galleryFile);
         });
+        setGalleryUploadProgress(100);
       }
 
       if (!finalMediaUrl) {
@@ -302,16 +299,18 @@ export const Admin: React.FC = () => {
         return;
       }
 
-      const newGalleryItem = {
+      const newGalleryItem: GaleriaItem = {
+        id: 'g-' + Date.now(),
         url: finalMediaUrl,
         tipo: galleryForm.tipo,
         categoria: galleryForm.categoria,
         titulo: galleryForm.titulo || '',
       };
 
-      await addDoc(collection(db, 'galeria'), newGalleryItem);
+      const updated = [newGalleryItem, ...galeriaItems];
+      setGaleriaItems(updated);
+      localStorage.setItem('tierra_sagrada_galeria', JSON.stringify(updated));
 
-      // Resetear
       setGalleryForm({
         titulo: '',
         categoria: 'temazcal',
@@ -320,7 +319,6 @@ export const Admin: React.FC = () => {
       });
       setGalleryFile(null);
       setGalleryUploadProgress(null);
-      loadData();
       alert('¡Elemento agregado a la galería con éxito! 📷');
     } catch (err) {
       console.error('Error al subir multimedia:', err);
@@ -331,12 +329,23 @@ export const Admin: React.FC = () => {
   };
 
   // 7. Borrar elemento genérico
-  const handleDelete = async (coleccion: string, id: string) => {
+  const handleDelete = (coleccion: string, id: string) => {
     if (!window.confirm('¿Estás seguro de que deseas eliminar este elemento permanentemente?')) return;
     setActionLoading(true);
     try {
-      await deleteDoc(doc(db, coleccion, id));
-      loadData();
+      if (coleccion === 'eventos') {
+        const updated = eventos.filter((x) => x.id !== id);
+        setEventos(updated);
+        localStorage.setItem('tierra_sagrada_eventos', JSON.stringify(updated));
+      } else if (coleccion === 'productos') {
+        const updated = productos.filter((x) => x.id !== id);
+        setProductos(updated);
+        localStorage.setItem('tierra_sagrada_productos', JSON.stringify(updated));
+      } else if (coleccion === 'galeria') {
+        const updated = galeriaItems.filter((x) => x.id !== id);
+        setGaleriaItems(updated);
+        localStorage.setItem('tierra_sagrada_galeria', JSON.stringify(updated));
+      }
     } catch (err) {
       console.error('Error al borrar:', err);
       alert('No se pudo borrar el elemento.');
@@ -379,7 +388,7 @@ export const Admin: React.FC = () => {
             </div>
             <h2 style={{ fontFamily: 'var(--font-title)', fontSize: '1.6rem' }}>Acceso Administrativo</h2>
             <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginTop: '0.3rem' }}>
-              Usa tus credenciales oficiales de Google / Firebase
+              Ingresa con tu correo autorizado de Tierra Sagrada
             </p>
           </div>
 
@@ -881,10 +890,10 @@ export const Admin: React.FC = () => {
             )}
           </div>
 
-          {/* LISTADO DE ELEMENTOS EXISTENTES EN FIRESTORE (COLUMNA DERECHA) */}
+          {/* LISTADO DE ELEMENTOS EXISTENTES (COLUMNA DERECHA) */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <h2 style={{ fontFamily: 'var(--font-title)', fontSize: '1.5rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.5rem' }}>
-              Registros en Base de Datos ({activeTab})
+              Registros del Catálogo ({activeTab})
             </h2>
 
             {actionLoading ? (
@@ -896,7 +905,7 @@ export const Admin: React.FC = () => {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxHeight: '70vh', overflowY: 'auto', paddingRight: '0.5rem' }}>
                 {/* LISTA EVENTOS */}
                 {activeTab === 'eventos' && (
-                  eventos.length === 0 ? <p style={{ fontStyle: 'italic', color: 'var(--color-text-muted)' }}>No hay eventos cargados en Firestore.</p> :
+                  eventos.length === 0 ? <p style={{ fontStyle: 'italic', color: 'var(--color-text-muted)' }}>No hay eventos registrados en el catálogo.</p> :
                   eventos.map((ev) => (
                     <div key={ev.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', backgroundColor: 'var(--color-bg-paper)', border: '1px solid var(--color-border)', borderRadius: '8px' }}>
                       <div>
@@ -917,7 +926,7 @@ export const Admin: React.FC = () => {
 
                 {/* LISTA PRODUCTOS */}
                 {activeTab === 'productos' && (
-                  productos.length === 0 ? <p style={{ fontStyle: 'italic', color: 'var(--color-text-muted)' }}>No hay productos cargados en Firestore.</p> :
+                  productos.length === 0 ? <p style={{ fontStyle: 'italic', color: 'var(--color-text-muted)' }}>No hay productos registrados en el catálogo.</p> :
                   productos.map((prod) => (
                     <div key={prod.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', backgroundColor: 'var(--color-bg-paper)', border: '1px solid var(--color-border)', borderRadius: '8px' }}>
                       <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
@@ -945,7 +954,7 @@ export const Admin: React.FC = () => {
 
                 {/* LISTA GALERÍA */}
                 {activeTab === 'galeria' && (
-                  galeriaItems.length === 0 ? <p style={{ fontStyle: 'italic', color: 'var(--color-text-muted)' }}>No hay multimedia en la galería de Firestore.</p> :
+                  galeriaItems.length === 0 ? <p style={{ fontStyle: 'italic', color: 'var(--color-text-muted)' }}>No hay elementos en la galería.</p> :
                   galeriaItems.map((item) => (
                     <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', backgroundColor: 'var(--color-bg-paper)', border: '1px solid var(--color-border)', borderRadius: '8px' }}>
                       <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>

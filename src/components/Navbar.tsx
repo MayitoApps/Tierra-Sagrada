@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 import { Menu, X, ShoppingBag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,7 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { cartCount, setIsCartOpen } = useCart();
-  const location = useLocation();
+  const pathname = usePathname();
 
   const navLinks = [
     { name: 'Inicio', path: '/' },
@@ -21,10 +24,11 @@ export const Navbar: React.FC = () => {
   ];
 
   const isActive = (path: string) => {
+    if (!pathname) return false;
     if (path === '/') {
-      return location.pathname === '/';
+      return pathname === '/';
     }
-    return location.pathname.startsWith(path);
+    return pathname.startsWith(path);
   };
 
   return (
@@ -44,7 +48,7 @@ export const Navbar: React.FC = () => {
         alignItems: 'center',
       }}>
         {/* Brand/Logo - Clean layout with Logo & Brand name only */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
           <img
             src="/Tierra-Sagrada.png"
             alt="Tierra Sagrada Logo"
@@ -84,7 +88,7 @@ export const Navbar: React.FC = () => {
           {navLinks.map((link) => (
             <Link
               key={link.path}
-              to={link.path}
+              href={link.path}
               style={{
                 fontFamily: 'var(--font-title)',
                 fontSize: '0.82rem',
@@ -258,7 +262,7 @@ export const Navbar: React.FC = () => {
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
-                  to={link.path}
+                  href={link.path}
                   onClick={() => setIsOpen(false)}
                   style={{
                     fontFamily: 'var(--font-title)',

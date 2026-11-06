@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export interface CartItem {
@@ -23,14 +25,33 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-    const savedCart = localStorage.getItem('tierra_sagrada_cart');
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem('tierra_sagrada_cart', JSON.stringify(cartItems));
+    try {
+      if (typeof window !== 'undefined') {
+        const savedCart = localStorage.getItem('tierra_sagrada_cart');
+        if (savedCart) {
+          const parsed = JSON.parse(savedCart);
+          requestAnimationFrame(() => {
+            setCartItems(parsed);
+          });
+        }
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('tierra_sagrada_cart', JSON.stringify(cartItems));
+      }
+    } catch {
+      // ignore
+    }
   }, [cartItems]);
 
   const addToCart = (product: { id: string; name: string; price: number; image?: string }) => {

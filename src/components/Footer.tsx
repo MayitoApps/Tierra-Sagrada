@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Mail, Phone, MapPin, Shield } from 'lucide-react';
 
 export const Footer: React.FC = () => {
@@ -91,13 +93,13 @@ export const Footer: React.FC = () => {
             gap: '0.6rem',
             fontSize: '0.9rem',
           }}>
-            <li><Link to="/" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Inicio</Link></li>
-            <li><Link to="/ceremonias" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Ceremonias y Servicios</Link></li>
-            <li><Link to="/calendario" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Calendario de Eventos</Link></li>
-            <li><Link to="/tienda" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Tienda de Medicina</Link></li>
-            <li><Link to="/galeria" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Galería de Fotos</Link></li>
-            <li><Link to="/rezandero" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>El Rezandero (Blog)</Link></li>
-            <li><Link to="/contacto" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Contacto</Link></li>
+            <li><Link href="/" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Inicio</Link></li>
+            <li><Link href="/ceremonias" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Ceremonias y Servicios</Link></li>
+            <li><Link href="/calendario" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Calendario de Eventos</Link></li>
+            <li><Link href="/tienda" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Tienda de Medicina</Link></li>
+            <li><Link href="/galeria" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Galería de Fotos</Link></li>
+            <li><Link href="/rezandero" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>El Rezandero (Blog)</Link></li>
+            <li><Link href="/contacto" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Contacto</Link></li>
           </ul>
         </div>
 
@@ -172,7 +174,7 @@ export const Footer: React.FC = () => {
             
             {/* Link discreto al panel de administrador */}
             <Link
-              to="/admin"
+              href="/admin"
               style={{
                 display: 'flex',
                 alignItems: 'center',

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase/config';
+'use client';
+
+import React, { useState } from 'react';
 import { Loader, Play, X, Eye } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -184,50 +184,11 @@ const fallbackMedia: MediaItem[] = [
   }
 ];
 
-const getInitialMedia = (): MediaItem[] => {
-  const cached = localStorage.getItem('tierra_sagrada_galeria');
-  if (cached) {
-    try {
-      return JSON.parse(cached);
-    } catch {
-      return fallbackMedia;
-    }
-  }
-  return fallbackMedia;
-};
-
 export const Galeria: React.FC = () => {
-  const [mediaList, setMediaList] = useState<MediaItem[]>(getInitialMedia);
-  const [loading, setLoading] = useState(true);
+  const [mediaList] = useState<MediaItem[]>(fallbackMedia);
+  const [loading] = useState(false);
   const [categoriaActiva, setCategoriaActiva] = useState<string>('todos');
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
-
-  useEffect(() => {
-    const fetchMedia = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, 'galeria'));
-        const dataList: MediaItem[] = [];
-        
-        querySnapshot.forEach((doc) => {
-          dataList.push({ id: doc.id, ...doc.data() } as MediaItem);
-        });
-
-        if (dataList.length > 0) {
-          setMediaList(dataList);
-          localStorage.setItem('tierra_sagrada_galeria', JSON.stringify(dataList));
-        } else {
-          setMediaList(fallbackMedia);
-          localStorage.removeItem('tierra_sagrada_galeria');
-        }
-      } catch (error) {
-        console.error('Error al recuperar galería de Firestore: ', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMedia();
-  }, []);
 
   const categorias = [
     { key: 'todos', label: 'Todos' },

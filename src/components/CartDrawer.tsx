@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { useCart } from '../context/CartContext';
 import { X, Trash2, Plus, Minus, MessageSquare } from 'lucide-react';
