@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Compass, Flame, Leaf, Droplet, BookOpen } from 'lucide-react';
 import { motion, type Variants } from 'framer-motion';
+import { miembrosFamilia } from '../data/familia';
 
 export const Home: React.FC = () => {
   // Variantes para animaciones de desvanecimiento y movimiento
@@ -193,7 +194,7 @@ export const Home: React.FC = () => {
                 Tierra Sagrada nace del llamado por reconectar con la sabiduría ancestral en el ecosistema chinampero de Xochimilco. Nuestro espacio está diseñado bajo principios de permacultura, rodeado de vegetación endémica y las aguas sagradas de Cuemanco.
               </p>
               <p style={{ color: 'var(--color-text-muted)', marginBottom: '2rem' }}>
-                Aquí, el fuego del abuelo Temazcal transmuta y purifica, el Cacao sagrado abre el corazón y despierta la palabra dulce, y el viento susurra los rezos que curan el alma. Te invitamos a cruzar en canoa y vivir un reencuentro contigo mismo y con la naturaleza.
+                Nuestra casa cuida lo sagrado para todos y nuestras familias.
               </p>
               <Link href="/ceremonias" className="btn-handwritten btn-secondary-organic">
                 Conoce Nuestras Ceremonias
@@ -376,27 +377,45 @@ export const Home: React.FC = () => {
               display: 'block',
               marginBottom: '0.5rem',
             }}>
-              Nuestros Facilitadores
+              La Familia
             </span>
-            <h2 style={{ fontSize: '2.2rem', marginBottom: '1rem' }}>Guardianes de la Medicina</h2>
+            <h2 style={{ fontSize: '2.2rem', marginBottom: '1rem' }}>Nuestra Familia en Tierra Sagrada</h2>
             <p style={{ color: 'var(--color-text-muted)' }}>
-              Te presentamos a los terapeutas y curanderos que guían los rezos, cantos y temazcales en nuestro espacio de Xochimilco.
+              Te presentamos a quienes cuidamos el fuego, el agua, la chinampa y guiamos los rezos en nuestro espacio sagrado. Haz clic en cualquiera de nosotros para conocer nuestra historia, a qué nos dedicamos y nuestras redes sociales.
             </p>
           </div>
 
           <style dangerouslySetInnerHTML={{__html: `
             .home-team-grid {
               display: grid;
-              grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-              gap: 2.5rem;
+              grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+              gap: 2rem;
               margin-bottom: 3rem;
+            }
+            .home-team-card {
+              text-decoration: none;
+              color: inherit;
+              padding: 0;
+              overflow: hidden;
+              display: flex;
+              flex-direction: column;
+              transition: transform 0.3s ease, box-shadow 0.3s ease;
+              cursor: pointer;
+            }
+            .home-team-card:hover {
+              transform: translateY(-6px);
+              box-shadow: 0 12px 30px rgba(44, 34, 30, 0.12);
             }
             .home-team-card-image {
               width: 100%;
-              height: 220px;
+              height: 230px;
               background-size: cover;
               background-position: center;
               border-bottom: 2px solid var(--color-border);
+              transition: transform 0.4s ease;
+            }
+            .home-team-card:hover .home-team-card-image {
+              transform: scale(1.04);
             }
           `}} />
 
@@ -407,37 +426,43 @@ export const Home: React.FC = () => {
             viewport={{ once: true, amount: 0.1 }}
             className="home-team-grid"
           >
-            {/* Guardián 1 */}
-            <motion.div variants={fadeInUp} className="card-handmade" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-              <div className="home-team-card-image" style={{ backgroundImage: 'url("/Abel.jpeg")' }} />
-              <div style={{ padding: '1.5rem', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-accent-terracotta)', textTransform: 'uppercase' }}>Temazcaltiani / Jefe de Danza del Sol</span>
-                <h3 style={{ fontFamily: 'var(--font-title)', fontSize: '1.2rem', margin: '0.2rem 0 0' }}>Abel Hombono Tatanka</h3>
-              </div>
-            </motion.div>
-
-            {/* Guardián 2 */}
-            <motion.div variants={fadeInUp} className="card-handmade" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-              <div className="home-team-card-image" style={{ backgroundImage: 'url("/6.jpeg")' }} />
-              <div style={{ padding: '1.5rem', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-accent-terracotta)', textTransform: 'uppercase' }}>Mujer Medicina</span>
-                <h3 style={{ fontFamily: 'var(--font-title)', fontSize: '1.2rem', margin: '0.2rem 0 0' }}>Abuela Lulu Xochiquetzali</h3>
-              </div>
-            </motion.div>
-
-            {/* Guardián 3 */}
-            <motion.div variants={fadeInUp} className="card-handmade" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-              <div className="home-team-card-image" style={{ backgroundImage: 'url("/oso.jpeg")' }} />
-              <div style={{ padding: '1.5rem', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-accent-terracotta)', textTransform: 'uppercase' }}>Águila de Fuego / Danzante del sol</span>
-                <h3 style={{ fontFamily: 'var(--font-title)', fontSize: '1.2rem', margin: '0.2rem 0 0' }}>Oso</h3>
-              </div>
-            </motion.div>
+            {miembrosFamilia.slice(0, 4).map((miembro) => (
+              <motion.div key={miembro.slug} variants={fadeInUp}>
+                <Link href={`/nosotros/${miembro.slug}`} className="card-handmade home-team-card">
+                  <div style={{ overflow: 'hidden', height: '230px' }}>
+                    <div className="home-team-card-image" style={{ backgroundImage: `url("${miembro.foto}")` }} />
+                  </div>
+                  <div style={{ padding: '1.4rem', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-accent-terracotta)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>
+                      {miembro.rol}
+                    </span>
+                    <h3 style={{ fontFamily: 'var(--font-title)', fontSize: '1.2rem', margin: '0.2rem 0 0.6rem 0' }}>
+                      {miembro.nombre}
+                    </h3>
+                    <p style={{ fontSize: '0.84rem', color: 'var(--color-text-muted)', lineHeight: '1.5', flexGrow: 1, marginBottom: '1rem' }}>
+                      {miembro.dedicacion.length > 95 ? miembro.dedicacion.substring(0, 95) + '...' : miembro.dedicacion}
+                    </p>
+                    <span style={{
+                      fontSize: '0.8rem',
+                      fontWeight: 600,
+                      color: 'var(--color-accent-sage)',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.3rem',
+                      borderTop: '1px solid var(--color-border)',
+                      paddingTop: '0.8rem',
+                    }}>
+                      Ver perfil & redes sociales →
+                    </span>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
           </motion.div>
 
           <div style={{ textAlign: 'center' }}>
             <Link href="/nosotros" className="btn-handwritten btn-secondary-organic">
-              Ver Todos los Guardianes
+              Conoce a Toda la Familia
             </Link>
           </div>
         </div>
@@ -509,7 +534,7 @@ export const Home: React.FC = () => {
                 Venta y distribución de remedios naturales elaborados artesanalmente en Tierra Sagrada. Nuestro producto insignia es el <strong>Chilcuague</strong> (raíz de oro), una planta medicinal mexicana tradicional con potentes propiedades curativas, anestésicas y desinfectantes.
               </p>
               <p style={{ color: 'var(--color-text-muted)', marginBottom: '2rem' }}>
-                Apoya a los productores locales y adquiere tinturas, microdosis y pomadas hechas con cantos y rezos de sanación.
+                Apoya a los productores locales y adquiere tinturas, microdosis y pomadas hechos de manera responsable y orgánica.
               </p>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <Link href="/tienda" className="btn-handwritten btn-primary-organic">
@@ -524,14 +549,14 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* 4.5. Muestra de El Rezandero */}
+      {/* 4.5. Sección Pensares (El Rezandero) */}
       <section style={{
         padding: '6rem 0',
         backgroundColor: 'var(--color-bg-paper)',
         borderTop: '2px solid var(--color-border)',
       }}>
         <div className="container-organic">
-          <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto 4rem auto' }}>
+          <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 3rem auto' }}>
             <span style={{
               fontFamily: 'var(--font-title)',
               color: 'var(--color-accent-sage)',
@@ -542,15 +567,38 @@ export const Home: React.FC = () => {
               display: 'block',
               marginBottom: '0.5rem',
             }}>
-              Bitácora de Sabiduría
+              Pensares
             </span>
-            <h2 style={{ fontSize: '2.2rem', marginBottom: '1rem' }}>El Rezandero (Blog)</h2>
-            <p style={{ color: 'var(--color-text-muted)' }}>
-              Explora fragmentos de conocimiento sobre la herbolaria mexicana, los secretos chinamperos y el rezo espiritual de nuestras ceremonias.
+            <h2 style={{ fontSize: '2.4rem', marginBottom: '1rem' }}>El Rezandero</h2>
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '1.05rem', lineHeight: '1.7' }}>
+              Palabras del corazón, saberes de herbolaria, crónicas del lago y testimonios vivos de quienes caminan con nosotros en la chinampa.
             </p>
           </div>
 
+          {/* Categorías Principales de Pensares */}
           <style dangerouslySetInnerHTML={{__html: `
+            .pensares-category-grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+              gap: 2rem;
+              margin-bottom: 4rem;
+            }
+            .pensares-cat-card {
+              background-color: var(--color-bg-sand);
+              border: 2px solid var(--color-border);
+              border-radius: 18px 8px 18px 8px;
+              padding: 2rem 1.8rem;
+              text-decoration: none;
+              color: inherit;
+              display: flex;
+              flex-direction: column;
+              transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            }
+            .pensares-cat-card:hover {
+              transform: translateY(-6px);
+              border-color: var(--color-accent-terracotta);
+              box-shadow: 0 10px 25px rgba(200, 107, 75, 0.12);
+            }
             .home-blog-grid {
               display: grid;
               grid-template-columns: 1fr;
@@ -581,6 +629,52 @@ export const Home: React.FC = () => {
             }
           `}} />
 
+          {/* Lista de Secciones de Pensares solicitada por el usuario */}
+          <div className="pensares-category-grid">
+            <Link href="/rezandero?categoria=Herbolaria" className="pensares-cat-card">
+              <div style={{ fontSize: '2.4rem', marginBottom: '0.8rem' }}>🌿</div>
+              <h3 style={{ fontFamily: 'var(--font-title)', fontSize: '1.3rem', marginBottom: '0.6rem', color: 'var(--color-text-earth)' }}>
+                Herbolaria
+              </h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', lineHeight: '1.6', flexGrow: 1, marginBottom: '1.2rem' }}>
+                Estudio y preservación de plantas curativas, la raíz de oro (Chilcuague), tinturas y remedios tradicionales de México.
+              </p>
+              <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-accent-terracotta)' }}>
+                Explorar artículos de Herbolaria →
+              </span>
+            </Link>
+
+            <Link href="/rezandero?categoria=Chinampa" className="pensares-cat-card">
+              <div style={{ fontSize: '2.4rem', marginBottom: '0.8rem' }}>🛶</div>
+              <h3 style={{ fontFamily: 'var(--font-title)', fontSize: '1.3rem', marginBottom: '0.6rem', color: 'var(--color-text-earth)' }}>
+                Chinampa
+              </h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', lineHeight: '1.6', flexGrow: 1, marginBottom: '1.2rem' }}>
+                Conoce los misterios del lago de Xochimilco, la tecnología agrícola milenaria y las labores cotidianas en una chinampa viva.
+              </p>
+              <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-accent-sage)' }}>
+                Explorar relatos de la Chinampa →
+              </span>
+            </Link>
+
+            <Link href="/rezandero?categoria=Testimonios" className="pensares-cat-card">
+              <div style={{ fontSize: '2.4rem', marginBottom: '0.8rem' }}>✨</div>
+              <h3 style={{ fontFamily: 'var(--font-title)', fontSize: '1.3rem', marginBottom: '0.6rem', color: 'var(--color-text-earth)' }}>
+                Testimonios
+              </h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', lineHeight: '1.6', flexGrow: 1, marginBottom: '1.2rem' }}>
+                Experiencias y relatos reales de personas y familias que han vivido la sanación en el temazcal y los círculos ceremoniales.
+              </p>
+              <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-accent-gold)' }}>
+                Leer Testimonios reales →
+              </span>
+            </Link>
+          </div>
+
+          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+            <h3 style={{ fontFamily: 'var(--font-title)', fontSize: '1.4rem' }}>Artículos y Entradas Recientes</h3>
+          </div>
+
           <motion.div
             variants={staggerContainer}
             initial="initial"
@@ -589,27 +683,6 @@ export const Home: React.FC = () => {
             className="home-blog-grid"
           >
             {/* Artículo 1 */}
-            <motion.div variants={fadeInUp} className="card-handmade home-blog-card">
-              <div style={{ overflow: 'hidden', height: '200px' }}>
-                <div className="home-blog-card-image" style={{ backgroundImage: 'url("/1.jpeg")' }} />
-              </div>
-              <div style={{ padding: '1.5rem', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-accent-terracotta)', textTransform: 'uppercase', marginBottom: '0.3rem', display: 'block' }}>Rituales</span>
-                <h3 style={{ fontFamily: 'var(--font-title)', fontSize: '1.2rem', margin: '0 0 0.8rem 0', lineHeight: '1.3' }}>La medicina del Temazcal: Volver al vientre de la Madre Tierra</h3>
-                <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', lineHeight: '1.6', marginBottom: '1.5rem', flexGrow: 1 }}>
-                  El temazcal representa la matriz de la Madre Tierra. Entrar en este baño de vapor sagrado es una oportunidad de morir a lo viejo y renacer purificado.
-                </p>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontStyle: 'italic' }}>Abuela María Guadalupe</span>
-                  <Link href="/rezandero" className="btn-handwritten" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem', gap: '0.3rem' }}>
-                    <BookOpen size={12} />
-                    <span>Leer</span>
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Artículo 2 */}
             <motion.div variants={fadeInUp} className="card-handmade home-blog-card">
               <div style={{ overflow: 'hidden', height: '200px' }}>
                 <div className="home-blog-card-image" style={{ backgroundImage: 'url("/12.jpeg")' }} />
@@ -622,7 +695,28 @@ export const Home: React.FC = () => {
                 </p>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
                   <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontStyle: 'italic' }}>Taita Juan</span>
-                  <Link href="/rezandero" className="btn-handwritten" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem', gap: '0.3rem' }}>
+                  <Link href="/rezandero?categoria=Herbolaria" className="btn-handwritten" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem', gap: '0.3rem' }}>
+                    <BookOpen size={12} />
+                    <span>Leer</span>
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Artículo 2 */}
+            <motion.div variants={fadeInUp} className="card-handmade home-blog-card">
+              <div style={{ overflow: 'hidden', height: '200px' }}>
+                <div className="home-blog-card-image" style={{ backgroundImage: 'url("/7.jpeg")' }} />
+              </div>
+              <div style={{ padding: '1.5rem', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-accent-sage)', textTransform: 'uppercase', marginBottom: '0.3rem', display: 'block' }}>Chinampa</span>
+                <h3 style={{ fontFamily: 'var(--font-title)', fontSize: '1.2rem', margin: '0 0 0.8rem 0', lineHeight: '1.3' }}>El Lago Sagrado y la Chinampa: Qué se hace y cómo se cultiva</h3>
+                <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', lineHeight: '1.6', marginBottom: '1.5rem', flexGrow: 1 }}>
+                  Descubre las labores ancestrales en las islas de agua de Xochimilco: el uso de los sauces ahuejotes, el fango fértil y el respeto al humedal sagrado.
+                </p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontStyle: 'italic' }}>Luna Celeste</span>
+                  <Link href="/rezandero?categoria=Chinampa" className="btn-handwritten" style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem', gap: '0.3rem' }}>
                     <BookOpen size={12} />
                     <span>Leer</span>
                   </Link>
@@ -633,7 +727,7 @@ export const Home: React.FC = () => {
 
           <div style={{ textAlign: 'center' }}>
             <Link href="/rezandero" className="btn-handwritten btn-primary-organic">
-              Ver Todas las Entradas
+              Ver Todos los Pensares
             </Link>
           </div>
         </div>

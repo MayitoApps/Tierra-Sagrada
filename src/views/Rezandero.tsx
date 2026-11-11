@@ -1,16 +1,17 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, ArrowLeft, Calendar, Clock, Send, BookOpen } from 'lucide-react';
+import { Search, ArrowLeft, Calendar, Clock, Send, BookOpen, Sparkles, Sprout, Trees, HeartHandshake } from 'lucide-react';
 
-interface Article {
+export interface Article {
   id: string;
   title: string;
   date: string;
   author: string;
   authorRole: string;
-  category: 'Herbolaria' | 'Rituales' | 'Chinampa';
+  category: 'Herbolaria' | 'Chinampa' | 'Testimonios';
   image: string;
   readTime: string;
   summary: string;
@@ -19,34 +20,31 @@ interface Article {
 }
 
 export const Rezandero: React.FC = () => {
+  const searchParams = useSearchParams();
+  const categoriaFromUrl = searchParams.get('categoria');
+
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('Todas');
+  const [selectedCategory, setSelectedCategory] = useState<string>(() => {
+    if (categoriaFromUrl && ['Herbolaria', 'Chinampa', 'Testimonios'].includes(categoriaFromUrl)) {
+      return categoriaFromUrl;
+    }
+    return 'Todas';
+  });
   const [activeArticle, setActiveArticle] = useState<Article | null>(null);
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
+  useEffect(() => {
+    if (categoriaFromUrl && ['Herbolaria', 'Chinampa', 'Testimonios'].includes(categoriaFromUrl)) {
+      const frame = requestAnimationFrame(() => {
+        setSelectedCategory(categoriaFromUrl);
+      });
+      return () => cancelAnimationFrame(frame);
+    }
+  }, [categoriaFromUrl]);
+
   const articles: Article[] = [
-    {
-      id: 'temazcal-vientre-madre',
-      title: 'La medicina del Temazcal: Volver al vientre de la Madre Tierra',
-      date: '15 de Junio, 2026',
-      author: 'Abuela María Guadalupe',
-      authorRole: 'Temazcalera y Curandera Tradicional',
-      category: 'Rituales',
-      image: '/1.jpeg',
-      readTime: '6 min de lectura',
-      summary: 'El temazcal representa la matriz de la Madre Tierra. Entrar en este baño de vapor sagrado es una oportunidad de morir a lo viejo y renacer purificado a través de las piedras volcánicas y cantos ancestrales.',
-      content: [
-        'El Temazcal, proveniente del náhuatl "temazcalli" (casa de baño de vapor), no es un simple sauna, sino uno de los rituales terapéuticos y espirituales más antiguos y vivos de Mesoamérica. Estructuralmente, su forma de cúpula de barro representa la matriz de la Madre Tierra (Tonantzin). Al entrar en él, nos introducimos al vientre materno para confrontar nuestra propia oscuridad y emerger renovados.',
-        'El corazón del temazcal son las "Abuelitas", piedras volcánicas ardientes que se introducen en el centro de la estructura. La persona que guía el temazcal vierte infusiones de hierbas medicinales (como copal, eucalipto, salvia, manzanilla y romero) sobre las piedras calientes. Este vapor medicinal, cargado de la energía del fuego y las plantas, ingresa a través del sistema respiratorio y los poros de la piel, desencadenando una profunda purificación física y celular.',
-        'Durante las "puertas" o etapas del temazcal, la oscuridad y el calor nos invitan a la introspección. Acompañados por el canto medicinal y los latidos del tambor, soltamos los miedos, las tensiones físicas y los patrones mentales que ya no nos sirven. Es un acto de entrega absoluta al elemento agua y al espíritu del fuego, donde sudamos todo lo que envenena nuestro cuerpo y nuestra mente.',
-        'Al salir del temazcal, el choque con el aire fresco y el viento de la chinampa se siente como un auténtico nacimiento. Sentirse vivo, con los sentidos agudizados y un corazón aligerado, es la mayor prueba de que hemos sido devueltos a la tierra con un nuevo rezo en los labios. Ometéotl.'
-      ],
-      quotes: [
-        'En la oscuridad del temazcal no hay rostros ni diferencias. Todos somos un solo latido en el vientre de la tierra.',
-        'El sudor limpia el cuerpo, el llanto limpia el alma y el canto fortalece el espíritu.'
-      ]
-    },
+    // HERBOLARIA
     {
       id: 'chilcuague-raiz-oro',
       title: 'Chilcuague: La milagrosa raíz de oro mexicana',
@@ -59,28 +57,51 @@ export const Rezandero: React.FC = () => {
       summary: 'Originaria de la Sierra Gorda mexicana, la raíz de Chilcuague (Heliopsis longipes) es venerada por su increíble poder anestésico, antibiótico y estimulante de las defensas naturales.',
       content: [
         'El Chilcuague (Heliopsis longipes), comúnmente llamado "Raíz de Oro", es un tesoro botánico endémico de la región de la Sierra Gorda de Guanajuato, Querétaro y San Luis Potosí. Tradicionalmente utilizado por los pueblos chichimecas y otomíes, este tallo subterráneo guarda propiedades farmacológicas tan asombrosas que la ciencia moderna apenas comienza a comprender formalmente.',
-        'Al masticar una pequeña porción de raíz de chilcuague, se desata una intensa sensación de hormigueo acompañada de una abundante salivación. Este efecto es provocado por las alcamidas, componentes activos que estimulan de inmediato las glándulas salivales. La saliva no solo lubrica, sino que contiene enzimas inmunoglobulinas que defienden el cuerpo. El chilcuague es un anestésico local formidable para dolores dentales, infecciones de garganta e inflamación de encías.',
-        'Además de su poder físico, el chilcuague posee propiedades antimicrobianas, antimicóticas y antiparasitarias sumamente potentes. Los arrieros del México antiguo la llevaban en sus bolsillos para tratar picaduras de insectos, desinfectar heridas e incluso purificar el agua del campo. Masticar raíz de chilcuague antes de internarse en climas difíciles ayudaba a prevenir infecciones estomacales.',
-        'En nuestro caminar medicinal, honramos al chilcuague como un guardián del fuego interno. Ayuda a limpiar las palabras atascadas en la garganta y activa la energía de autocuración del organismo. En Tierra Sagrada, elaboramos tinturas y atomizadores con chilcuague orgánico para compartir la bendición de esta planta de poder.'
+        'Al masticar una pequeña porción de raíz de chilcuague, se desata una intensa sensación de hormigueo acompañada de una abundante salivación. Este efecto es provocado por las alcamidas (particularmente la afinina), componentes activos que estimulan de inmediato las glándulas salivales. La saliva no solo lubrica, sino que contiene enzimas inmunoglobulinas que defienden el cuerpo. El chilcuague es un anestésico local formidable para dolores dentales, infecciones de garganta e inflamación de encías.',
+        'Además de su poder físico, el chilcuague posee propiedades antimicrobianas, antimicóticas y antiparasitarias sumamente potentes. Los caminantes del México antiguo la llevaban en sus itacates para tratar picaduras de insectos, desinfectar heridas e incluso purificar el agua del campo. Masticar raíz de chilcuague antes de internarse en climas difíciles ayudaba a prevenir infecciones gastrointestinales.',
+        'En nuestro caminar medicinal, honramos al chilcuague como un guardián del fuego interno. Ayuda a limpiar las palabras atascadas en la garganta y activa la energía de autocuración del organismo. En Tierra Sagrada, elaboramos extractos y atomizadores con chilcuague orgánico cultivado y cosechado con rezo para compartir la bendición de esta planta de poder.'
       ],
       quotes: [
         'La raíz de oro despierta el agua viva de nuestra boca, la medicina más cercana que poseemos para protegernos.',
-        'Un regalo de la Sierra Gorda que limpia la palabra y restaura el aliento divino.'
+        'Un regalo de la Sierra Gorda que limpia la palabra y restaura el aliento sagrado.'
       ]
     },
     {
+      id: 'plantas-sagradas-infusiones',
+      title: 'Herbolaria viva: Copal, Salvia, Romero y Pericón en el rezo tradicional',
+      date: '18 de Mayo, 2026',
+      author: 'Abuela Lulu Xochiquetzali',
+      authorRole: 'Mujer Medicina y Portadora de la Tierra',
+      category: 'Herbolaria',
+      image: '/14.jpeg',
+      readTime: '6 min de lectura',
+      summary: 'Las plantas no solo curan el cuerpo; cada hoja, resina y flor guarda una memoria elemental que limpia el campo áurico y calma la mente inquieta.',
+      content: [
+        'En la cosmovisión ancestral de nuestra tierra, las plantas no son tratadas como simples ingredientes pasivos, sino como hermanas sabias con espíritu (nahual). Cuando recolectamos una planta en la chinampa, primero pedimos permiso con tabaco y agradecimiento, reconociendo que su esencia nos brindará equilibrio.',
+        'El Romero (Rosmarinus officinalis) es el guardián de la memoria y la circulación. Su aroma penetrante ahuyenta el cansancio psíquico, vigoriza el corazón y, cuando se vierte en té sobre las piedras ardientes del temazcal, despeja los bronquios y relaja los músculos en tensión acumulada.',
+        'La Salvia y el Pericón (Tagetes lucida, la flor dorada de Tláloc) se utilizan tradicionalmente para sahumar y templar las energías del hogar. El pericón, cosechado al final de las lluvias, protege contra las energías pesadas y el susto, mientras que la salvia blanca y morada purifica los pensamientos densos y calma el sistema nervioso.',
+        'Unidas al humo del Copal blanco (resina sagrada del árbol Bursera), estas plantas crean una atmósfera de respeto y recogimiento. En Tierra Sagrada, cada infusión que preparamos para los asistentes es elaborada con plantas frescas cortadas el mismo día, respetando sus tiempos lunares de cosecha.'
+      ],
+      quotes: [
+        'La planta cura cuando tú reconoces su vida y ella reconoce tu rezo humilde.',
+        'El sahumerio eleva en humo lo que el corazón ya no necesita cargar.'
+      ]
+    },
+
+    // CHINAMPA
+    {
       id: 'chinampa-tecnologia-ancestral',
-      title: 'La Chinampa: Tecnologías ancestrales y cultivos vivos en Xochimilco',
+      title: 'La Chinampa: Agricultura milenaria y preservación viva en Xochimilco',
       date: '28 de Mayo, 2026',
-      author: 'Luna Celeste',
-      authorRole: 'Guía de Círculos Femeninos y Rezo Lunar',
+      author: 'Abel Hombono Tatanka',
+      authorRole: 'Temazcaltiani y Guardián del Fuego',
       category: 'Chinampa',
       image: '/7.jpeg',
       readTime: '7 min de lectura',
-      summary: 'Explora la maravillosa arquitectura ecológica de las chinampas: islas artificiales que combinan lodo fértil, raíces de ahuejote y canales de agua para alimentar y sanar a generaciones.',
+      summary: 'Explora la maravillosa arquitectura ecológica de las chinampas: islas de cultivo lacustre que combinan lodo fértil, raíces de ahuejote y canales de agua limpia para nutrir a la vida.',
       content: [
         'La chinampa es una de las mayores hazañas de ingeniería agrícola de la humanidad. Concebida por las civilizaciones mesoamericanas hace más de mil años en la cuenca del Valle de México, esta técnica consiste en la creación de islas artificiales cultivables sobre el lecho del lago de poca profundidad. En Xochimilco, mantenemos viva esta tradición que fusiona agua y tierra fértil.',
-        'La construcción de una chinampa comienza delimitando el área con estacas de ahuejotes (Salix bonplandiana), un tipo de sauce llorón nativo cuyas raíces crecen verticalmente hacia abajo buscando el fondo lodoso. Estas raíces actúan como anclas biológicas vivas que amarran el perímetro de la isla impidiendo que la tierra se deslave hacia los canales. Luego, se rellenan estas áreas con capas alternadas de vegetación acuática (lirio y tule) y lodo extraído del fondo del canal, rico en materia orgánica en descomposición.',
+        'La construcción de una chinampa comienza delimitando el área con estacas de ahuejotes (Salix bonplandiana), un tipo de sauce nativo cuyas raíces crecen verticalmente hacia abajo buscando el fondo lodoso. Estas raíces actúan como anclas biológicas vivas que amarran el perímetro de la isla impidiendo que la tierra se deslave hacia los canales. Luego, se rellenan estas áreas con capas alternadas de vegetación acuática (lirio y tule) y lodo extraído del fondo del canal, rico en materia orgánica en descomposición.',
         'Esta disposición permite que la chinampa reciba humedad constante por capilaridad desde el nivel inferior, reduciendo drásticamente la necesidad de riego externo. El agua que rodea las islas actúa como un regulador térmico natural, protegiendo los cultivos de heladas extremas y creando un microclima sumamente productivo capaz de dar hasta cuatro cosechas al año.',
         'Nuestra chinampa en Tierra Sagrada no es solo una parcela de hortalizas; es un santuario biológico donde sembramos plantas medicinales, flores ceremoniales como el cempasúchil y hierbas de olor. Al caminar sobre el lodo chinampero, pisamos la memoria de nuestros ancestros y honramos un ciclo hidrológico sagrado que sigue alimentando el espíritu de Xochimilco.'
       ],
@@ -90,24 +111,68 @@ export const Rezandero: React.FC = () => {
       ]
     },
     {
-      id: 'cacao-medicina-corazon',
-      title: 'El despertar del Cacao: La medicina que late en el corazón',
-      date: '10 de Mayo, 2026',
-      author: 'Sofía Amatista',
-      authorRole: 'Facilitadora de Cacao y Canto Medicina',
-      category: 'Rituales',
-      image: '/2.jpeg',
-      readTime: '5 min de lectura',
-      summary: 'El cacao es mucho más que chocolate; es una medicina ancestral que nutre el sistema cardiovascular, libera endorfinas y abre sutilmente las puertas de nuestra sensibilidad emocional.',
+      id: 'el-lago-y-la-vida-chinampera',
+      title: 'El misterio del Lago: ¿Qué se hace y cómo se vive el día a día en una chinampa?',
+      date: '20 de Abril, 2026',
+      author: 'Abraham Ortiz',
+      authorRole: 'Águila de Fuego y Navegante de los Canales',
+      category: 'Chinampa',
+      image: '/15.jpeg',
+      readTime: '6 min de lectura',
+      summary: 'El agua tranquila de Cuemanco, el remar en canoa al amanecer y el cuidado de los bancales. Conoce cómo es la vida en el corazón del lago alejado del ruido de la ciudad.',
       content: [
-        'Para las civilizaciones maya y mexica, el cacao ("kakaw") era el alimento de los dioses. No se consumía como golosina, sino como una bebida sagrada reservada para guerreros, sacerdotes y ceremonias especiales de unión y transición. En la actualidad, el rezo del cacao regresa para recordarnos cómo habitar el corazón.',
-        'Desde la perspectiva bioquímica, el cacao puro es una de las fuentes de antioxidantes y magnesio más concentradas del reino vegetal. Además, contiene teobromina, un estimulante suave que dilata los vasos sanguíneos y activa la circulación del corazón de forma prolongada, a diferencia de la cafeína que altera el sistema nervioso. Consumir cacao en un entorno ceremonial relaja el cuerpo y estimula la liberación de dopamina y anandamida, conocida como el neurotransmisor del bienestar.',
-        'En una ceremonia de cacao, preparamos la pasta de cacao natural 100% puro en agua de manantial, endulzada ligeramente con miel silvestre o especias como chile criollo y canela para activar su calor. Al beberlo con intención, entramos en un espacio de escucha sensible. El cacao no altera la conciencia ni produce visiones; en su lugar, afina nuestra capacidad de sentir, perdonar y expresar lo que guardamos.',
-        'El cacao actúa como un suave abridor del pecho. Acompañado de cantos medicina que resuenan en la chinampa, nos conecta con la vibración del amor propio y la gratitud profunda hacia la existencia, recordándonos que la curación verdadera siempre comienza por el amor.'
+        'Mucha gente asocia a Xochimilco exclusivamente con la fiesta y las trajineras decoradas del centro del pueblo. Sin embargo, en la zona de reserva ecológica de Cuemanco existe otro Xochimilco: uno en silencio profundo, donde el único sonido es el aleteo de las garzas, el chapoteo de los remos y el crujido de las ramas al viento.',
+        'El día en la chinampa comienza antes de que despunte el sol. Tomamos la canoa rústica en el embarcadero y remamos a través de canales estrechos flanqueados por ahuejotes centenarios. La neblina matutina cubre el agua como un manto sagrado, creando una sensación de viaje temporal donde el estrés de la metrópoli queda completamente atrás.',
+        '¿Qué se hace en una chinampa? El trabajo es constante, manual y en profunda armonía con los ciclos naturales: desmalezar a mano, airear los bancales con herramientas de madera, alimentar la composta con materia vegetal seca, sembrar almácigos (chapines) de barro y cuidar que el agua fluya libremente por las orillas.',
+        'No utilizamos pesticidas ni agroquímicos industriales; la propia riqueza microbiana del lodo lacustre provee los nutrientes necesarios para que crezca la salvia, el cempasúchil, la caléndula y el romero. Vivir y trabajar en la chinampa nos recuerda la virtud de la paciencia: todo germina a su debido tiempo cuando el agua y la tierra se respetan mutuamente.'
       ],
       quotes: [
-        'El cacao viaja directo al corazón. Te recuerda quién eres cuando dejas de pensar tanto.',
-        'Una semilla que guarda la memoria del sol y de la selva cálida, lista para derretir la frialdad del alma.'
+        'En los canales de Cuemanco el tiempo se detiene; basta remar diez minutos para entrar a otro siglo.',
+        'El lago no exige prisa, exige atención y reverencia hacia cada forma de vida.'
+      ]
+    },
+
+    // TESTIMONIOS
+    {
+      id: 'testimonio-renacer-temazcal',
+      title: 'Testimonio: "El día que entré al vientre del temazcal y solté cinco años de dolor"',
+      date: '10 de Mayo, 2026',
+      author: 'Carolina Morales (Participante)',
+      authorRole: 'Círculo de Sanación de Cuemanco',
+      category: 'Testimonios',
+      image: '/1.jpeg',
+      readTime: '5 min de lectura',
+      summary: 'Relato real de una participante que vivió la ceremonia del temazcal tradicional: la confrontación con la oscuridad, las lágrimas sanadoras y la ligereza del renacimiento.',
+      content: [
+        '"Llegué a Tierra Sagrada un sábado por la mañana con el pecho comprimido. Había cargado con la pérdida de mi madre durante cinco años sin permitirme llorar de verdad, sintiendo que debía ser fuerte para todos los demás.',
+        'Desde el trayecto en canoa sentí un cambio de frecuencia. El silencio del agua de Xochimilco y la bienvenida cálida de los facilitadores con sahumación de copal me hicieron bajar la guardia. Cuando nos invitaron a entrar a gatas al temazcal, diciendo "Por todas mis relaciones", sentí un nudo en la garganta.',
+        'En la segunda puerta, con el calor de las piedras volcánicas al rojo vivo y el aroma del eucalipto y la salvia inundando el domo, el facilitador entonó un canto a las madres y a la tierra. Algo en mi interior se rompió para bien: comencé a llorar con un llanto hondo y liberador que nunca había experimentado. No había juicio, nadie te mira en la oscuridad sagrada; solo se escuchaban respiraciones profundas y rezos de gratitud.',
+        'Al abrirse la cuarta puerta y salir al pasto fresco de la chinampa, sentí como si me hubieran quitado cincuenta kilos de la espalda. Tomar el té tibio de hierbas mirando el cielo reflejado en el canal fue el momento de mayor paz que he vivido en años. Volví a nacer."',
+      ],
+      quotes: [
+        '"En la oscuridad sagrada del temazcal entendí que soltar el dolor no es olvidar, sino honrar el amor."',
+        '"Salí con el corazón ligero y con la certeza de que la Madre Tierra siempre nos sostiene."'
+      ]
+    },
+    {
+      id: 'testimonio-reencuentro-familiar',
+      title: 'Testimonio de Familia: Cruzar en canoa a la chinampa y recordar quiénes somos',
+      date: '25 de Abril, 2026',
+      author: 'Familia Ramírez Gómez',
+      authorRole: 'Visita Ceremonial Familiar',
+      category: 'Testimonios',
+      image: '/2.jpeg',
+      readTime: '6 min de lectura',
+      summary: 'Cómo una familia de tres generaciones encontró un espacio para dejar las pantallas, sentarse junto al fuego sagrado y sanar sus lazos familiares.',
+      content: [
+        '"Vivimos en el ritmo acelerado del sur de la Ciudad de México: trabajo, tráfico, escuelas y cada quien con la mirada pegada al teléfono. Decidimos venir en familia —abuelos, padres e hijos adolescentes— a una jornada en Tierra Sagrada sin saber exactamente qué esperar.',
+        'El solo hecho de apagar los teléfonos celulares al subir a la canoa en Cuemanco provocó una conversación que no habíamos tenido en meses. Los muchachos miraban asombrados a los patos buceadores y los ahuejotes, mientras mis papás recordaban cómo era el México de su juventud.',
+        'Al llegar a la chinampa, La Familia de facilitadores nos recibió como si fuéramos parientes de toda la vida. Participamos en el encendido del fuego y después compartimos una taza de cacao caliente en círculo. Por primera vez en mucho tiempo, escuché a mi hijo de 16 años expresar con lágrimas lo agradecido que estaba con sus abuelos.',
+        'Nuestra casa cuida lo sagrado para todos y nuestras familias: esa frase cobra un sentido total cuando estás ahí. Tierra Sagrada no es un parque temático, es un santuario vivo que nos devolvió la ternura familiar que la rutina de la ciudad nos había arrebatado."'
+      ],
+      quotes: [
+        '"Basta una mañana sin señal de celular y frente al fuego para que una familia vuelva a mirarse a los ojos."',
+        '"El cacao y la palabra dulce nos abrieron la puerta a una reconciliación que creíamos imposible."'
       ]
     }
   ];
@@ -153,24 +218,139 @@ export const Rezandero: React.FC = () => {
               transition={{ duration: 0.4 }}
             >
               {/* Encabezado del Blog */}
-              <div style={{ textAlign: 'center', maxWidth: '750px', margin: '0 auto 3.5rem auto' }}>
+              <div style={{ textAlign: 'center', maxWidth: '780px', margin: '0 auto 3.5rem auto' }}>
                 <span style={{
                   fontFamily: 'var(--font-title)',
                   color: 'var(--color-accent-sage)',
                   fontWeight: 600,
-                  fontSize: '0.9rem',
+                  fontSize: '0.95rem',
                   letterSpacing: '0.15em',
                   textTransform: 'uppercase',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
                 }}>
-                  El Rezandero
+                  <Sparkles size={16} /> Pensares
                 </span>
                 <h1 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.2rem)', margin: '1rem 0' }}>
-                  Sabiduría y Medicina Tradicional
+                  El Rezandero y la Sabiduría del Lago
                 </h1>
                 <div className="divider-handdrawn" style={{ width: '120px', margin: '1rem auto' }} />
                 <p style={{ color: 'var(--color-text-earth)', fontSize: '1.05rem', lineHeight: '1.7' }}>
-                  Bienvenido a nuestro espacio de palabra escrita. Aquí compartimos los saberes de la herbolaria mexicana, los secretos del cultivo chinampero y el rezo espiritual de nuestras ceremonias ancestrales.
+                  Nuestra casa cuida lo sagrado para todos y nuestras familias. Un espacio de palabra escrita donde compartimos los saberes de la herbolaria viva, la vida cotidiana en la chinampa de Xochimilco y testimonios de sanación en nuestras ceremonias.
                 </p>
+              </div>
+
+              {/* Categorías destacadas en tarjetas superiores */}
+              <style dangerouslySetInnerHTML={{__html: `
+                .category-showcase-grid {
+                  display: grid;
+                  grid-template-columns: 1fr;
+                  gap: 1.5rem;
+                  margin-bottom: 3rem;
+                }
+                @media (min-width: 768px) {
+                  .category-showcase-grid {
+                    grid-template-columns: repeat(3, 1fr);
+                  }
+                }
+                .category-showcase-card {
+                  background-color: var(--color-bg-paper);
+                  border: 2px solid var(--color-border);
+                  border-radius: var(--radius-organic);
+                  padding: 1.5rem;
+                  cursor: pointer;
+                  text-align: left;
+                  transition: all 0.3s ease;
+                  display: flex;
+                  flex-direction: column;
+                }
+                .category-showcase-card:hover, .category-showcase-card.active {
+                  border-color: var(--color-accent-terracotta);
+                  background-color: #fff;
+                  transform: translateY(-4px);
+                  box-shadow: var(--shadow-organic);
+                }
+                .category-showcase-card.active {
+                  border-color: var(--color-accent-sage);
+                }
+              `}} />
+
+              <div className="category-showcase-grid">
+                <button
+                  type="button"
+                  onClick={() => setSelectedCategory('Herbolaria')}
+                  className={`category-showcase-card ${selectedCategory === 'Herbolaria' ? 'active' : ''}`}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.6rem' }}>
+                    <div style={{
+                      backgroundColor: 'rgba(92, 114, 91, 0.15)',
+                      color: 'var(--color-accent-sage)',
+                      width: '38px',
+                      height: '38px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <Sprout size={20} />
+                    </div>
+                    <h3 style={{ fontSize: '1.2rem', margin: 0, fontFamily: 'var(--font-title)' }}>Herbolaria</h3>
+                  </div>
+                  <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--color-text-muted)', lineHeight: '1.5' }}>
+                    Plantas sagradas, infusiones medicinales, sahumerios y el poder de la raíz de chilcuague.
+                  </p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedCategory('Chinampa')}
+                  className={`category-showcase-card ${selectedCategory === 'Chinampa' ? 'active' : ''}`}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.6rem' }}>
+                    <div style={{
+                      backgroundColor: 'rgba(200, 107, 75, 0.15)',
+                      color: 'var(--color-accent-terracotta)',
+                      width: '38px',
+                      height: '38px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <Trees size={20} />
+                    </div>
+                    <h3 style={{ fontSize: '1.2rem', margin: 0, fontFamily: 'var(--font-title)' }}>Chinampa</h3>
+                  </div>
+                  <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--color-text-muted)', lineHeight: '1.5' }}>
+                    El misterio del lago, los ahuejotes, la siembra tradicional y cómo se vive en la chinampa.
+                  </p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedCategory('Testimonios')}
+                  className={`category-showcase-card ${selectedCategory === 'Testimonios' ? 'active' : ''}`}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.6rem' }}>
+                    <div style={{
+                      backgroundColor: 'rgba(164, 118, 77, 0.15)',
+                      color: 'var(--color-text-earth)',
+                      width: '38px',
+                      height: '38px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <HeartHandshake size={20} />
+                    </div>
+                    <h3 style={{ fontSize: '1.2rem', margin: 0, fontFamily: 'var(--font-title)' }}>Testimonios</h3>
+                  </div>
+                  <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--color-text-muted)', lineHeight: '1.5' }}>
+                    Historias reales de personas y familias que sanaron y renacieron en el temazcal sagrado.
+                  </p>
+                </button>
               </div>
 
               {/* Filtros e Input de Búsqueda */}
@@ -246,9 +426,10 @@ export const Rezandero: React.FC = () => {
 
               <div className="search-filter-wrapper">
                 <div className="filter-buttons">
-                  {['Todas', 'Herbolaria', 'Rituales', 'Chinampa'].map((cat) => (
+                  {(['Todas', 'Herbolaria', 'Chinampa', 'Testimonios'] as const).map((cat) => (
                     <button
                       key={cat}
+                      type="button"
                       onClick={() => setSelectedCategory(cat)}
                       className={`filter-btn ${selectedCategory === cat ? 'active' : ''}`}
                     >
@@ -270,7 +451,7 @@ export const Rezandero: React.FC = () => {
                   />
                   <input
                     type="text"
-                    placeholder="Buscar artículos..."
+                    placeholder="Buscar en Pensares..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="search-input"
@@ -389,7 +570,7 @@ export const Rezandero: React.FC = () => {
                           paddingTop: '1rem'
                         }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <span style={{ fontSize: '1.5rem' }}>👤</span>
+                            <span style={{ fontSize: '1.5rem' }}>🌿</span>
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
                               <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-text-earth)' }}>
                                 {art.author}
@@ -401,6 +582,7 @@ export const Rezandero: React.FC = () => {
                           </div>
 
                           <button
+                            type="button"
                             onClick={() => {
                               setActiveArticle(art);
                               window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -511,6 +693,7 @@ export const Rezandero: React.FC = () => {
             >
               {/* Botón de volver */}
               <button
+                type="button"
                 onClick={() => {
                   setActiveArticle(null);
                   window.scrollTo({ top: 0 });
@@ -519,7 +702,7 @@ export const Rezandero: React.FC = () => {
                 style={{ marginBottom: '2.5rem', padding: '0.6rem 1.2rem', gap: '0.4rem', alignSelf: 'flex-start' }}
               >
                 <ArrowLeft size={16} />
-                <span>Volver al blog</span>
+                <span>Volver a Pensares</span>
               </button>
 
               {/* Encabezado del Artículo */}
@@ -574,7 +757,7 @@ export const Rezandero: React.FC = () => {
                   borderTop: '1px solid var(--color-border)',
                   borderBottom: '1px solid var(--color-border)'
                 }}>
-                  <span style={{ fontSize: '2rem' }}>👤</span>
+                  <span style={{ fontSize: '2rem' }}>🌿</span>
                   <div>
                     <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-text-earth)' }}>
                       Por {activeArticle.author}
@@ -670,6 +853,7 @@ export const Rezandero: React.FC = () => {
                 alignItems: 'center'
               }}>
                 <button
+                  type="button"
                   onClick={() => {
                     setActiveArticle(null);
                     window.scrollTo({ top: 0 });
@@ -678,7 +862,7 @@ export const Rezandero: React.FC = () => {
                   style={{ padding: '0.6rem 1.2rem', gap: '0.4rem' }}
                 >
                   <ArrowLeft size={16} />
-                  <span>Volver al blog</span>
+                  <span>Volver a Pensares</span>
                 </button>
 
                 <span style={{ fontSize: '1.2rem' }}>🌿🔥💧🌬️</span>

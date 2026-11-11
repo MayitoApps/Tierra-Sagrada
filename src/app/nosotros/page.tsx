@@ -1,10 +1,11 @@
 import { Nosotros } from '../../views/Nosotros';
 
 export const metadata = {
-  title: 'Guardianes y Facilitadores | Tierra Sagrada',
-  description: 'Conoce a nuestros temazcaltianis, abuelas, taitas y danzantes del sol comprometidos con la medicina ancestral.',
+  title: 'La Familia | Tierra Sagrada',
+  description: 'Conoce a La Familia de Tierra Sagrada: temazcaltianis, abuelas de medicina, danzantes del sol y guardianes de la chinampa.',
 };
 
 export default function NosotrosPage() {
   return <Nosotros />;
 }
+

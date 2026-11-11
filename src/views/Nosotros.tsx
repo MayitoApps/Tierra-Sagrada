@@ -1,63 +1,12 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { motion, type Variants } from 'framer-motion';
-import { ShieldCheck, Heart } from 'lucide-react';
-
-interface Facilitador {
-  nombre: string;
-  rol: string;
-  foto: string;
-}
+import { ShieldCheck, Heart, ArrowRight, Sparkles } from 'lucide-react';
+import { miembrosFamilia } from '../data/familia';
 
 export const Nosotros: React.FC = () => {
-  const facilitadores: Facilitador[] = [
-    {
-      nombre: 'Abel Hombono Tatanka',
-      rol: 'Temazcaltiani, Jefe de danza del sol',
-      foto: '/Abel.jpeg',
-    },
-    {
-      nombre: 'Oso',
-      rol: 'Águila de Fuego, danzante del sol',
-      foto: '/oso.jpeg',
-    },
-    {
-      nombre: 'Abraham Ortiz',
-      rol: 'Águila de fuego, danzante del sol',
-      foto: '/Abraham.jpeg',
-    },
-    {
-      nombre: 'Enrique Itzcuauhtli',
-      rol: 'Águila de Fuego, Danzante del sol',
-      foto: '/Enrique.jpeg',
-    },
-    {
-      nombre: 'Monica Alvarez Xochitlmeztlaxohtli',
-      rol: 'Mujer Medicina, danzante de luna',
-      foto: '/Moni.jpeg',
-    },
-    {
-      nombre: 'Abuela Lulu Xochiquetzali',
-      rol: 'Mujer Medicina, portadora de la tierra, danzante del sol, danzante de luna',
-      foto: '/6.jpeg',
-    },
-    {
-      nombre: 'Abuela Leticia Acatzin',
-      rol: 'Mujer Medicina, portadora de fuego, danzante del sol, danzante de luna',
-      foto: '/19.jpeg',
-    },
-    {
-      nombre: 'Abuela Diana Quiahuitzin',
-      rol: 'Mujer medicina, portadora del agua, danzante del sol, danzante de luna',
-      foto: '/15.jpeg',
-    },
-    {
-      nombre: 'Abuela Laura Miztlixochitl',
-      rol: 'Mujer medicina, portadora del viento, danzante del sol, danzante de luna',
-      foto: '/20.jpeg',
-    }
-  ];
 
   const fadeInUp: Variants = {
     initial: { opacity: 0, y: 30 },
@@ -92,10 +41,10 @@ export const Nosotros: React.FC = () => {
           }}>
             Nuestra Esencia
           </span>
-          <h1 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.2rem)', margin: '1rem 0' }}>El Origen y el Equipo</h1>
+          <h1 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.2rem)', margin: '1rem 0' }}>El Origen y La Familia</h1>
           <div className="divider-handdrawn" style={{ width: '120px', margin: '1rem auto' }} />
           <p style={{ color: 'var(--color-text-earth)', fontSize: '1.05rem', lineHeight: '1.7' }}>
-            Tierra Sagrada no es solo un lugar físico; es una chinampa viva en Xochimilco concebida como un altar a cielo abierto, dedicada a la preservación del conocimiento herbolario y ceremonial mesoamericano.
+            Nuestra casa cuida lo sagrado para todos y nuestras familias. Tierra Sagrada es una chinampa viva en Xochimilco concebida como un altar a cielo abierto, dedicada a la preservación del conocimiento herbolario, ceremonial y del buen vivir.
           </p>
         </div>
 
@@ -140,7 +89,7 @@ export const Nosotros: React.FC = () => {
               El Misticismo de Cuemanco
             </h2>
             <p style={{ color: 'var(--color-text-muted)', marginBottom: '1rem' }}>
-              Xochimilco, declarado Patrimonio de la Humanidad, guarda en sus canales una de las tecnologías de cultivo y coexistencia ecológica más antiguas de América: la Chinampa. Estar rodeados de agua y sauce llorón (ahuejotes) nos permite propiciar un campo de silencio y pureza idóneo para procesos terapéuticos profundos.
+              Xochimilco, declarado Patrimonio de la Humanidad, guarda en sus canales una de las tecnologías de cultivo y coexistencia ecológica más antiguas de América: la Chinampa. Estar rodeados de agua y sauces (ahuejotes) nos permite propiciar un campo de silencio y pureza idóneo para procesos terapéuticos profundos.
             </p>
             <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem' }}>
               Nuestras cabañas ceremoniales, el Temazcal de barro tradicional y nuestro jardín de medicina sagrada están integrados respetuosamente con este entorno, protegiendo a la flora y fauna local de la reserva ecológica de Cuemanco.
@@ -158,31 +107,59 @@ export const Nosotros: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Sección: Facilitadores */}
+        {/* Sección: La Familia */}
         <div style={{ borderTop: '2px solid var(--color-border)', paddingTop: '5rem' }}>
-          <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto 4rem auto' }}>
-            <h2 style={{ fontSize: '2.2rem', marginBottom: '1rem' }}>Guardianes de la Medicina</h2>
-            <p style={{ color: 'var(--color-text-muted)' }}>
-              Las personas encargadas de sostener y guiar las ceremonias, compartiendo su rezo con responsabilidad y tradición.
+          <div style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto 4rem auto' }}>
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              color: 'var(--color-accent-sage)',
+              fontSize: '0.85rem',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.12em',
+              marginBottom: '0.5rem',
+            }}>
+              <Sparkles size={16} /> Caminantes y Guardianes
+            </span>
+            <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.6rem)', marginBottom: '1rem' }}>La Familia</h2>
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '1.05rem', lineHeight: '1.7' }}>
+              Nuestra casa cuida lo sagrado para todos y nuestras familias. Haz clic en cada uno para conocer su presentación, a qué se dedica y contactarlo en sus redes.
             </p>
           </div>
 
           <style dangerouslySetInnerHTML={{__html: `
             .team-grid {
               display: grid;
-              grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-              gap: 3rem;
+              grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+              gap: 2.5rem;
+            }
+            .team-card {
+              display: flex;
+              flex-direction: column;
+              text-decoration: none;
+              color: inherit;
+              background-color: var(--color-bg-card);
+              border-radius: var(--radius-organic);
+              overflow: hidden;
+              transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            }
+            .team-card:hover {
+              transform: translateY(-6px);
+              box-shadow: var(--shadow-organic-hover);
+              border-color: var(--color-accent-terracotta);
             }
             .team-card-image {
               width: 100%;
-              height: 250px;
+              height: 280px;
               background-size: cover;
               background-position: center;
               border-bottom: 2px solid var(--color-border);
-              transition: var(--transition-smooth);
+              transition: transform 0.5s ease;
             }
             .team-card:hover .team-card-image {
-              transform: scale(1.03);
+              transform: scale(1.04);
             }
           `}} />
           <motion.div
@@ -191,47 +168,77 @@ export const Nosotros: React.FC = () => {
             animate="animate"
             className="team-grid"
           >
-            {facilitadores.map((fac) => (
+            {miembrosFamilia.map((fac) => (
               <motion.div
-                key={fac.nombre}
+                key={fac.slug}
                 variants={fadeInUp}
-                className="card-handmade team-card"
-                style={{
-                  padding: 0,
-                  overflow: 'hidden',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
               >
-                {/* Imagen del facilitador */}
-                <div style={{ overflow: 'hidden', height: '250px' }}>
-                  <div
-                    className="team-card-image"
-                    style={{ backgroundImage: `url("${fac.foto}")` }}
-                  />
-                </div>
+                <Link
+                  href={`/nosotros/${fac.slug}`}
+                  className="card-handmade team-card"
+                  style={{
+                    padding: 0,
+                    height: '100%',
+                  }}
+                >
+                  {/* Imagen */}
+                  <div style={{ overflow: 'hidden', height: '280px' }}>
+                    <div
+                      className="team-card-image"
+                      style={{ backgroundImage: `url("${fac.foto}")` }}
+                    />
+                  </div>
 
-                {/* Info */}
-                <div style={{ padding: '1.5rem', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                  <span style={{
-                    fontSize: '0.75rem',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    color: 'var(--color-accent-terracotta)',
-                    letterSpacing: '0.1em',
-                  }}>
-                    {fac.rol}
-                  </span>
-                  
-                  <h3 style={{
-                    fontFamily: 'var(--font-title)',
-                    fontSize: '1.25rem',
-                    margin: '0.3rem 0 0.8rem 0',
-                    color: 'var(--color-text-earth)',
-                  }}>
-                    {fac.nombre}
-                  </h3>
-                </div>
+                  {/* Info */}
+                  <div style={{ padding: '1.8rem', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                    <span style={{
+                      fontSize: '0.75rem',
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      color: 'var(--color-accent-terracotta)',
+                      letterSpacing: '0.1em',
+                    }}>
+                      {fac.rol}
+                    </span>
+                    
+                    <h3 style={{
+                      fontFamily: 'var(--font-title)',
+                      fontSize: '1.35rem',
+                      margin: '0.4rem 0 0.8rem 0',
+                      color: 'var(--color-text-earth)',
+                    }}>
+                      {fac.nombre}
+                    </h3>
+
+                    <p style={{
+                      color: 'var(--color-text-muted)',
+                      fontSize: '0.9rem',
+                      lineHeight: '1.6',
+                      marginBottom: '1.5rem',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      flexGrow: 1,
+                    }}>
+                      {fac.dedicacion}
+                    </p>
+
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      paddingTop: '1rem',
+                      borderTop: '1px solid var(--color-border)',
+                      color: 'var(--color-accent-sage)',
+                      fontSize: '0.85rem',
+                      fontWeight: 600,
+                    }}>
+                      <span>Conoce su historia y redes</span>
+                      <ArrowRight size={16} />
+                    </div>
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </motion.div>

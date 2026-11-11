@@ -36,7 +36,7 @@ export const Footer: React.FC = () => {
             color: 'var(--color-text-muted)',
             marginBottom: '1rem',
           }}>
-            Un espacio sagrado en el corazón de los canales de Cuemanco, Xochimilco. Nos dedicamos a honrar la sabiduría de la Madre Tierra a través de la medicina tradicional, cantos y rezos.
+            Nuestra casa cuida lo sagrado para todos y nuestras familias. Un espacio ceremonial en el corazón de los canales de Cuemanco, Xochimilco, dedicado a la medicina tradicional, cantos y rezos ancestrales.
           </p>
           <span style={{ fontSize: '1.5rem' }}>🌿🔥💧🌬️</span>
           <div style={{ marginTop: '1.2rem', display: 'flex', gap: '1.2rem', alignItems: 'center' }}>
@@ -96,9 +96,10 @@ export const Footer: React.FC = () => {
             <li><Link href="/" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Inicio</Link></li>
             <li><Link href="/ceremonias" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Ceremonias y Servicios</Link></li>
             <li><Link href="/calendario" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Calendario de Eventos</Link></li>
+            <li><Link href="/nosotros" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>La Familia</Link></li>
+            <li><Link href="/rezandero" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Pensares (Blog)</Link></li>
             <li><Link href="/tienda" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Tienda de Medicina</Link></li>
             <li><Link href="/galeria" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Galería de Fotos</Link></li>
-            <li><Link href="/rezandero" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>El Rezandero (Blog)</Link></li>
             <li><Link href="/contacto" style={{ transition: 'var(--transition-fast)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-accent-terracotta)'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>Contacto</Link></li>
           </ul>
         </div>

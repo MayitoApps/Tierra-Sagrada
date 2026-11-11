@@ -38,7 +38,7 @@ const fallbackProductos: Producto[] = [
     name: 'Extracto de Chilcuague',
     price: 250,
     descripcion: 'Contiene afinina, una alcamida con propiedades medicinales indicada para aliviar boca seca, tos, infecciones virales, fuegos, aftas, mal aliento, dolor de muelas y gingivitis, o simplemente refrescar la boca. En la piel ayuda con micosis como el pie de atleta y problemas de cicatrización. Presentación: Atomizador de 30ml.',
-    beneficios: 'Ingredientes: Extracto de chilcuague, (Mandarina-Miel: extracto de mandarina y miel), (Lyptus: miel y extracto de eucalipto, romero y romero).',
+    beneficios: 'Ingredientes: Extracto de chilcuague, (Mandarina-Miel: extracto de mandarina y miel), (Lyptus: miel y extracto de eucalipto y romero).',
     image: '/extracto-chilcuague.jpeg'
   },
   {
@@ -54,7 +54,7 @@ const fallbackProductos: Producto[] = [
     name: 'Jabón Íntimo en Espuma',
     price: 300,
     descripcion: 'Promueve orgasmos más potentes, duraderos y placenteros. Amplía el espectro sensorial sensibilizando los tejidos y relajando los músculos. Úsalo también como aceite de masajes. Presentación: Espumador de 120ml.',
-    beneficios: 'Ingredientes: Aceite de cannabis, aceite de coco organico, aceite de oliva orgánico.',
+    beneficios: 'Ingredientes: Aceite de cannabis, aceite de coco orgánico, aceite de oliva orgánico.',
     image: '/jabon-intimo-espuma.jpeg'
   },
   {
@@ -86,12 +86,12 @@ const fallbackProductos: Producto[] = [
     name: 'Lubricante Íntimo Cannabis',
     price: 300,
     descripcion: 'Promueve orgasmos más potentes, duraderos y placenteros. Amplía el espectro sensorial sensibilizando los tejidos y relajando los músculos. Úsalo también como aceite de masajes. Presentación: Envase de 30ml.',
-    beneficios: 'Ingredientes: Aceite de cannabis, aceite de coco organico, aceite de oliva orgánico.',
+    beneficios: 'Ingredientes: Aceite de cannabis, aceite de coco orgánico, aceite de oliva orgánico.',
     image: '/lubricante-intimo-cannabis.jpeg'
   },
   {
     id: 'jabon-anti-acne',
-    name: 'Jabon Anti-Acne',
+    name: 'Jabón Anti-Acné',
     price: 110,
     descripcion: 'Jabón saponificado en frío a base de carbón vegetal activado, arcillas minerales y aceites esenciales desinfectantes y purificantes.',
     beneficios: 'Limpia profundamente las impurezas, controla la secreción sebácea y desinflama brotes sin dañar el manto lipídico natural.',
@@ -99,7 +99,7 @@ const fallbackProductos: Producto[] = [
   },
   {
     id: 'espuma-intima',
-    name: 'Espuma Intima',
+    name: 'Espuma Íntima',
     price: 140,
     descripcion: 'Fórmula sumamente suave y respetuosa con infusión de caléndula, manzanilla fresca y ácido láctico vegetal para el cuidado íntimo diario.',
     beneficios: 'Mantiene el pH equilibrado de la zona íntima, alivia la irritación, previene infecciones y brinda frescura de origen vegetal.',
@@ -131,7 +131,7 @@ const fallbackProductos: Producto[] = [
   },
   {
     id: 'tabaco-organico',
-    name: 'Tabaco Organico (Taita Sairi)',
+    name: 'Tabaco Orgánico (Taita Sairi)',
     price: 130,
     descripcion: 'Tabaco tradicional cultivado de forma 100% natural sin pesticidas ni aditivos nocivos, ideal para rezo, ofrendas o sahumación ritual.',
     beneficios: 'Conecta con la tierra, aclara la mente, ayuda a centrar las intenciones en el rezo y limpia las energías densas del entorno.',

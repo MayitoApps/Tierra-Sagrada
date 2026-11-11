@@ -3,6 +3,7 @@
 out/
 build/
 dist/
+*.tsbuildinfo
 
 # Node / Dependencies
 node_modules/
